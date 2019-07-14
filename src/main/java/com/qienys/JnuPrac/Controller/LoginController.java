@@ -47,7 +47,17 @@ public class LoginController {
         }
     }
 
+    /*@RequestMapping("/")
+    public String redirectIndex() {
+        return "redirect:/index";
+    }*/
 
+    @RequestMapping("/index")
+    public String index(Model model) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        model.addAttribute("user", user);
+        return "index";
+    }
 
 
 
