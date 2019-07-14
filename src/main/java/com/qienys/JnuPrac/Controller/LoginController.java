@@ -29,7 +29,6 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public ResponseBo login(String username, String password) {
-        System.out.println(username);
         password = MD5Utils.encrypt(username, password);
         System.out.println(password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -47,6 +46,7 @@ public class LoginController {
             return ResponseBo.error("认证失败！");
         }
     }
+
 
 
 
