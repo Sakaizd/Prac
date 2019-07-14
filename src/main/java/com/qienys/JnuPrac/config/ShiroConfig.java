@@ -18,7 +18,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        shiroFilterFactoryBean.setLoginUrl("/index");
+        shiroFilterFactoryBean.setLoginUrl("/login");
         shiroFilterFactoryBean.setSuccessUrl("/index");
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 

@@ -17,13 +17,14 @@ public class TestController {
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "index";
     }
 
     @PostMapping("/login")
     @ResponseBody
     public ResponseBo login(String username, String password) {
         password = MD5Utils.encrypt(username, password);
+        System.out.println(username+"  "+password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
         try {
@@ -42,13 +43,11 @@ public class TestController {
 
     @RequestMapping("/")
     public String redirectIndex() {
-        return "redirect:/index";
+        return "/index";
     }
 
     @RequestMapping("/index")
     public String index(Model model) {
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
-        model.addAttribute("user", user);
         return "index";
     }
 }
