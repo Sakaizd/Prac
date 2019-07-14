@@ -21,16 +21,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class LoginController {
 
-    @GetMapping("/login")
+/*    @GetMapping("/login")
     public String login() {
         return "login";
-    }
+    }*/
 
     @PostMapping("/login")
     @ResponseBody
     public ResponseBo login(String username, String password) {
         password = MD5Utils.encrypt(username, password);
-        System.out.println(password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
         try {
@@ -47,10 +46,10 @@ public class LoginController {
         }
     }
 
-    /*@RequestMapping("/")
+    @RequestMapping("/")
     public String redirectIndex() {
         return "redirect:/index";
-    }*/
+    }
 
     @RequestMapping("/index")
     public String index(Model model) {
@@ -58,7 +57,5 @@ public class LoginController {
         model.addAttribute("user", user);
         return "index";
     }
-
-
 
 }
