@@ -6,19 +6,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 
+//用户信息
 @Entity
 public class UserInfo implements Serializable {
+
+    private static final long serialVersionUID = -3154423115116868855L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer uid;
-    private String pswQues;
-    private String pswAns;
-    private String email;
-    private String telephone;
-    private String name;
-    private String address;
-    private String idcard;
+    private Integer uid;//用户id
+    private String pswQues;//密码问题
+    private String pswAns;//问题答案
+    private String email;//邮箱
+    private String telephone;//电话
+    private String name;//姓名
+    private String address;//地址
+    private String idCard;//身份证
+
+    protected UserInfo(){
+
+    }
 
     public UserInfo(Integer uid, String pswQues, String pswAns, String email, String telephone, String name, String address, String idcard) {
         this.uid = uid;
@@ -28,7 +36,7 @@ public class UserInfo implements Serializable {
         this.telephone = telephone;
         this.name = name;
         this.address = address;
-        this.idcard = idcard;
+        this.idCard = idcard;
     }
 
     public Long getId() {
@@ -96,10 +104,10 @@ public class UserInfo implements Serializable {
     }
 
     public String getIdcard() {
-        return idcard;
+        return idCard;
     }
 
     public void setIdcard(String idcard) {
-        this.idcard = idcard;
+        this.idCard = idcard;
     }
 }

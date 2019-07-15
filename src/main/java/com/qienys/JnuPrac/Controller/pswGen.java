@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class pswGen {
     @RequestMapping("/pswgen")
     public String pswgen(){
-        String username = "123";
+        String username = "user";
         String password = "123";
         password = MD5Utils.encrypt(username,password);
         return password;

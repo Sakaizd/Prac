@@ -20,7 +20,7 @@ import java.util.Map;
 
 
 @Controller
-public class TestController {
+public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -29,15 +29,15 @@ public class TestController {
         JSONObject result = new JSONObject();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
         //System.out.println(user.getUsername()+" "+user.getPassword());
-        String password = MD5Utils.encrypt(user.getUsername(), user.getPassword());
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), password);
+        String password = MD5Utils.encrypt(user.getUserName(), user.getPassword());
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), password);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
             result.put("router", "LoginSuccess");
             result.put("method", "json");
-            result.put("username", user.getUsername());
-            result.put("usertype", user.getUsertype());
+            result.put("username", user.getUserName());
+            result.put("usertype", user.getUserType());
         } catch (UnknownAccountException e) {
             result.put("router","UnknownAccount");
             result.put("method", "json");

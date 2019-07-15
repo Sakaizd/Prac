@@ -38,7 +38,7 @@ public class ShiroRealm extends AuthorizingRealm {
         String password = new String((char[]) token.getCredentials());
 
         System.out.println("用户" + userName + "认证-----ShiroRealm.doGetAuthenticationInfo");
-        User user = userServiceImpl.findByUsername(userName);
+        User user = userServiceImpl.findByUserName(userName);
 
         if (user == null) {
             throw new UnknownAccountException("用户名或密码错误！");

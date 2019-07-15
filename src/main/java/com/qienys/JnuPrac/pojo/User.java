@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
+//用户
 @Entity
 public class User implements Serializable{
 
@@ -15,19 +16,23 @@ public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+    private String userName;
     private String password;
     private Date createTime;
-    private String status;
-    private String usertype;
+    private String status;//1 可用 0 锁定
+    private String userType;//admin,user
 
-/*    public User(String username, String password, Date createTime, String status, String usertype) {
-        this.username = username;
+    protected User(){
+
+    }
+
+    public User(String userName, String password, Date createTime, String status, String userType) {
+        this.userName = userName;
         this.password = password;
         this.createTime = createTime;
         this.status = status;
-        this.usertype = usertype;
-    }*/
+        this.userType = userType;
+    }
 
     public Long getId() {
         return id;
@@ -37,12 +42,12 @@ public class User implements Serializable{
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -69,12 +74,12 @@ public class User implements Serializable{
         this.status = status;
     }
 
-    public String getUsertype() {
-        return usertype;
+    public String getUserType() {
+        return userType;
     }
 
-    public void setUsertype(String usertype) {
-        this.usertype = usertype;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }
 

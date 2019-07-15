@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResponseBo extends HashMap<String, Object> {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -2989823719640891237L;
 
     public ResponseBo() {
         put("code", 0);
