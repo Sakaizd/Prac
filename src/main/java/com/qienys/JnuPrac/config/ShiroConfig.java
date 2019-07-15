@@ -30,7 +30,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/logout", "logout");
         //authc表示需要登录
         filterChainDefinitionMap.put("/user/**","authc");
-        filterChainDefinitionMap.put("/**", "user");*/
+        filterChainDefinitionMap.put("/**", "user");
+        */
 
         //匿名访问
         filterChainDefinitionMap.put("/css/**", "anon");
