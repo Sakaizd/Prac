@@ -2,7 +2,7 @@ package com.qienys.JnuPrac.shiro;
 
 
 import com.qienys.JnuPrac.pojo.User;
-import com.qienys.JnuPrac.service.UserServiceImpl;
+import com.qienys.JnuPrac.service.impl.UserServiceImpl;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -14,6 +14,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+
 
 public class ShiroRealm extends AuthorizingRealm {
 
@@ -37,11 +38,10 @@ public class ShiroRealm extends AuthorizingRealm {
         String password = new String((char[]) token.getCredentials());
 
         System.out.println("用户" + userName + "认证-----ShiroRealm.doGetAuthenticationInfo");
-        //User user = userService.findByUserName(userName);
         User user = userServiceImpl.findByUsername(userName);
 
         if (user == null) {
-            throw new UnknownAccountException("用户名8存在！");
+            throw new UnknownAccountException("用户名或密码错误！");
         }
         if (!password.equals(user.getPassword())) {
             throw new IncorrectCredentialsException("用户名或密码错误！");

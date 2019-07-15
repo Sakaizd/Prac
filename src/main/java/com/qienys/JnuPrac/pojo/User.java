@@ -14,24 +14,26 @@ public class User implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String username;
     private String password;
     private Date createTime;
     private String status;
-    private String pswQues;
-    private String pswAns;
-    private String email;
-    private String telephone;
-    private String name;
-    private String address;
-    private String idcard;
+    private String usertype;
 
-    public Integer getId() {
+/*    public User(String username, String password, Date createTime, String status, String usertype) {
+        this.username = username;
+        this.password = password;
+        this.createTime = createTime;
+        this.status = status;
+        this.usertype = usertype;
+    }*/
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,60 +69,12 @@ public class User implements Serializable{
         this.status = status;
     }
 
-    public String getPswQues() {
-        return pswQues;
+    public String getUsertype() {
+        return usertype;
     }
 
-    public void setPswQues(String pswQues) {
-        this.pswQues = pswQues;
-    }
-
-    public String getPswAns() {
-        return pswAns;
-    }
-
-    public void setPswAns(String pswAns) {
-        this.pswAns = pswAns;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getIdcard() {
-        return idcard;
-    }
-
-    public void setIdcard(String idcard) {
-        this.idcard = idcard;
+    public void setUsertype(String usertype) {
+        this.usertype = usertype;
     }
 }
 
