@@ -27,7 +27,7 @@ public class UserController {
 
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String login(@RequestBody JSONObject jsonParam) {
+    public String getUserInfo(@RequestBody JSONObject jsonParam) {
         System.out.println(jsonParam.toJSONString());
         JSONObject result = new JSONObject();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
@@ -40,6 +40,25 @@ public class UserController {
         result.put("username", user.getUserName());
         result.put("usertype", user.getUserType());
 
+        return result.toJSONString();
+    }
+
+    @RequestMapping("/jsontest")
+    @ResponseBody
+    public String getTest(){
+
+        JSONObject result = new JSONObject();
+        User loginUser = userServiceImpl.findByUserName("user");
+        System.out.println(loginUser.getUserName());
+        UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
+        System.out.println(userInfo.getAddress());
+        String data = JSON.toJSONString(userInfo);
+        result.put("router", "LoginSuccess");
+        result.put("method", "json");
+        result.put("data",data);
+        result.put("username", loginUser.getUserName());
+        result.put("usertype", loginUser.getUserType());
+        System.out.println(result.toJSONString());
         return result.toJSONString();
     }
 }

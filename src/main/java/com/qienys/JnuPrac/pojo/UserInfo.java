@@ -15,7 +15,7 @@ public class UserInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer uid;//用户id
+    private Long uid;//用户id
     private String pswQues;//密码问题
     private String pswAns;//问题答案
     private String email;//邮箱
@@ -28,7 +28,7 @@ public class UserInfo implements Serializable {
 
     }
 
-    public UserInfo(Integer uid, String pswQues, String pswAns, String email, String telephone, String name, String address, String idcard) {
+    public UserInfo(Long uid, String pswQues, String pswAns, String email, String telephone, String name, String address, String idcard) {
         this.uid = uid;
         this.pswQues = pswQues;
         this.pswAns = pswAns;
@@ -47,11 +47,11 @@ public class UserInfo implements Serializable {
         this.id = id;
     }
 
-    public Integer getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(Integer uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 

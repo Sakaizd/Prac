@@ -12,11 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
+
 
 
 @Controller
@@ -28,7 +24,7 @@ public class LoginController {
         System.out.println(jsonParam.toJSONString());
         JSONObject result = new JSONObject();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
-        //System.out.println(user.getUsername()+" "+user.getPassword());
+        System.out.println(user.getUserName()+" "+user.getPassword());
         String password = MD5Utils.encrypt(user.getUserName(), user.getPassword());
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), password);
         Subject subject = SecurityUtils.getSubject();
