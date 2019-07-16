@@ -20,7 +20,7 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String login(@RequestBody JSONObject jsonParam) {
-        System.out.println(jsonParam.toJSONString());
+        System.out.println("json:"+jsonParam.toJSONString());
         JSONObject result = new JSONObject();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
         //System.out.println(user.getUserName()+" "+user.getPassword());
