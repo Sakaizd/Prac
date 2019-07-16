@@ -20,7 +20,7 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String login(@RequestBody JSONObject jsonParam) {
-        //System.out.println(jsonParam.toJSONString());
+        System.out.println(jsonParam.toJSONString());
         JSONObject result = new JSONObject();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
         //System.out.println(user.getUserName()+" "+user.getPassword());
@@ -60,7 +60,7 @@ public class LoginController {
             result.put("code", "200");
             result.put("msg", "退出成功");
         } catch (Exception e) {
-            result.put("code", "-1");
+            result.put("code    ", "-1");
             result.put("msg", "退出异常");
         }
         return result.toJSONString();
