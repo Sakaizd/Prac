@@ -1,7 +1,6 @@
 package com.qienys.JnuPrac.Controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +26,7 @@ public class ProductController {
         try {
             // Get the file and save it somewhere
             byte[] bytes = file.getBytes();
-            Path path = Paths.get("/image" + file.getOriginalFilename());
+            Path path = Paths.get("/img" + file.getOriginalFilename());
             Files.write(path, bytes);
 
             redirectAttributes.addFlashAttribute("message",

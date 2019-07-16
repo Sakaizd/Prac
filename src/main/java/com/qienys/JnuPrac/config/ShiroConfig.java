@@ -17,7 +17,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        shiroFilterFactoryBean.setLoginUrl("/index");
+        shiroFilterFactoryBean.setLoginUrl("/");
         shiroFilterFactoryBean.setSuccessUrl("/index");
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
@@ -38,10 +38,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/fonts/**", "anon");
         filterChainDefinitionMap.put("/img/**", "anon");
-        filterChainDefinitionMap.put("/druid/**", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/index", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/LoginPage", "anon");
         filterChainDefinitionMap.put("/", "anon");
 
         //需要登陆
