@@ -11,7 +11,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -20,5 +22,12 @@ public class MallController {
 
     private ProductServiceImpl productServiceImpl;
 
+    @RequestMapping("/showItem.action")
+    public String showItem(Model model){
+        List<Product> ProductList = productServiceImpl.findAll();
+
+        return "";
+
+    }
 
 }

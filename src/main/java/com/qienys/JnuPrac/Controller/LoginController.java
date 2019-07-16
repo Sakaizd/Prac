@@ -30,10 +30,10 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
-            result.put("router", "LoginSuccess");
+            result.put("router", "default");
             result.put("method", "json");
             result.put("username", user.getUserName());
-            result.put("usertype", user.getUserType());
+            result.put("userType", user.getUserType());
         } catch (UnknownAccountException e) {
             result.put("router","UnknownAccount");
             result.put("method", "json");
@@ -44,13 +44,13 @@ public class LoginController {
             result.put("router","LockedAccount");
             result.put("method", "json");
         } catch (AuthenticationException e) {
-            result.put("router","login");
+            result.put("router","UnAuthentication");
             result.put("method", "json");
         }
         return result.toJSONString();
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String logout() {
         JSONObject result = new JSONObject();
@@ -74,11 +74,10 @@ public class LoginController {
 
     @RequestMapping("/index")
     public String index(Model model) {
-        System.out.println("index");
+        //System.out.println("index page");
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         model.addAttribute("user", user);
         return "index";
     }
-
 
 }

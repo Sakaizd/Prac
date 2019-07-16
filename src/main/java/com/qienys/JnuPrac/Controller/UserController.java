@@ -1,15 +1,13 @@
 package com.qienys.JnuPrac.Controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qienys.JnuPrac.pojo.User;
 import com.qienys.JnuPrac.pojo.UserInfo;
 import com.qienys.JnuPrac.service.impl.UserInfoServiceImpl;
 import com.qienys.JnuPrac.service.impl.UserServiceImpl;
 import com.qienys.JnuPrac.util.MD5Utils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,20 +23,50 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String getUserInfo(@RequestBody JSONObject jsonParam) {
+    public String postUserInfo(@RequestBody JSONObject jsonParam) {
         System.out.println(jsonParam.toJSONString());
-        JSONObject result = new JSONObject();
+        JSONObject userJSON = new JSONObject();
+        JSONArray result = new JSONArray();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
         User loginUser = userServiceImpl.findByUserName(user.getUserName());
         System.out.println(loginUser.getUserName());
         UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
-        result.put("router", "LoginSuccess");
+        userJSON.put("router", "/QueryUserInfo");
+        userJSON.put("method", "json");
+        userJSON.put("username", user.getUserName());
+        userJSON.put("userType", user.getUserType());
+        result.add(userJSON);
+        result.add(userInfo);
+        System.out.println(result.toJSONString());
+        return result.toJSONString();
+    }
+
+
+    @RequestMapping(value = "/passwdModify", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String passwdModify(@RequestBody JSONObject jsonParam) {
+        System.out.println(jsonParam.toJSONString());
+        JSONObject result = new JSONObject();
+        //传入数据 username password
+        User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
+        System.out.println(user.getUserName()+"  "+user.getPassword());
+        //修改密码 保存
+        User loginUser = userServiceImpl.findByUserName(user.getUserName());
+        String password = MD5Utils.encrypt(user.getUserName(), user.getPassword());
+        loginUser.setPassword(password);
+        userServiceImpl.save(loginUser);
+
+        UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
+        String Info = JSON.toJSONString(userInfo);
+        result.put("router", "/QueryDataPage/:username");
         result.put("method", "json");
-        result.put("data",userInfo);
+
+        result.put("userInfo", Info);
+        result.put("msg","ModifySuccess");
         result.put("username", user.getUserName());
-        result.put("usertype", user.getUserType());
+        result.put("userType", user.getUserType());
 
         return result.toJSONString();
     }
@@ -52,13 +80,16 @@ public class UserController {
         System.out.println(loginUser.getUserName());
         UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
         System.out.println(userInfo.getAddress());
-        String data = JSON.toJSONString(userInfo);
-        result.put("router", "LoginSuccess");
+        String info = JSON.toJSONString(userInfo);
+        result.put("router", "/");
         result.put("method", "json");
-        result.put("data",data);
+        result.put("userinfo",info);
         result.put("username", loginUser.getUserName());
         result.put("usertype", loginUser.getUserType());
         System.out.println(result.toJSONString());
         return result.toJSONString();
     }
+
+
+
 }
