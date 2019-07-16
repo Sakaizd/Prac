@@ -34,6 +34,7 @@ public class ShiroConfig {
         */
 
         //匿名访问
+        filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/fonts/**", "anon");
