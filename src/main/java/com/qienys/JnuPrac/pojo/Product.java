@@ -22,12 +22,13 @@ public class Product implements Serializable {
     private String sold;//卖出
     private String stock;//库存
     private boolean active;//1:上架 0：下架
+    private String url;//图片路径
 
     protected Product(){
 
     }
 
-    public Product(Double price, String name, String description, String productType, String brand, String sold, String stock, boolean active) {
+    public Product(Double price, String name, String description, String productType, String brand, String sold, String stock, boolean active, String url) {
         this.price = price;
         this.name = name;
         this.description = description;
@@ -36,6 +37,7 @@ public class Product implements Serializable {
         this.sold = sold;
         this.stock = stock;
         this.active = active;
+        this.url = url;
     }
 
     public Long getId() {
@@ -110,4 +112,11 @@ public class Product implements Serializable {
         this.stock = stock;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }
