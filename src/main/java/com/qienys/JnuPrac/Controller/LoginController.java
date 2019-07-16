@@ -2,7 +2,6 @@ package com.qienys.JnuPrac.Controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.qienys.JnuPrac.pojo.ResponseBo;
 import com.qienys.JnuPrac.pojo.User;
 import com.qienys.JnuPrac.util.MD5Utils;
 import org.apache.shiro.SecurityUtils;
@@ -21,10 +20,10 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String login(@RequestBody JSONObject jsonParam) {
-        System.out.println(jsonParam.toJSONString());
+        //System.out.println(jsonParam.toJSONString());
         JSONObject result = new JSONObject();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
-        System.out.println(user.getUserName()+" "+user.getPassword());
+        //System.out.println(user.getUserName()+" "+user.getPassword());
         String password = MD5Utils.encrypt(user.getUserName(), user.getPassword());
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), password);
         Subject subject = SecurityUtils.getSubject();

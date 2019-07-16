@@ -71,10 +71,10 @@ public class UserController {
         return result.toJSONString();
     }
 
+
     @RequestMapping("/jsontest")
     @ResponseBody
     public String getTest(){
-
         JSONObject result = new JSONObject();
         User loginUser = userServiceImpl.findByUserName("user");
         System.out.println(loginUser.getUserName());
