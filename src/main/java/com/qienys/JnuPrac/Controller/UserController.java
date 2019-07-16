@@ -27,20 +27,21 @@ public class UserController {
     @ResponseBody
     public String postUserInfo(@RequestBody JSONObject jsonParam) {
         System.out.println(jsonParam.toJSONString());
-        JSONObject userJSON = new JSONObject();
-        JSONArray result = new JSONArray();
+        JSONObject jsonUser = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
         User loginUser = userServiceImpl.findByUserName(user.getUserName());
         System.out.println(loginUser.getUserName());
         UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
-        userJSON.put("router", "/QueryUserInfo");
-        userJSON.put("method", "json");
-        userJSON.put("username", user.getUserName());
-        userJSON.put("userType", user.getUserType());
-        result.add(userJSON);
-        result.add(userInfo);
-        System.out.println(result.toJSONString());
-        return result.toJSONString();
+        jsonUser.put("router", "/QueryUserInfo");
+        jsonUser.put("method", "json");
+        jsonUser.put("username", user.getUserName());
+        jsonUser.put("userType", user.getUserType());
+        //先放jsonUser
+        jsonArray.add(jsonUser);
+        jsonArray.add(userInfo);
+        System.out.println(jsonArray.toJSONString());
+        return jsonArray.toJSONString();
     }
 
 
@@ -75,19 +76,19 @@ public class UserController {
     @RequestMapping("/jsontest")
     @ResponseBody
     public String getTest(){
-        JSONObject result = new JSONObject();
+        JSONObject jsonUser = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
         User loginUser = userServiceImpl.findByUserName("user");
         System.out.println(loginUser.getUserName());
         UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
-        System.out.println(userInfo.getAddress());
-        String info = JSON.toJSONString(userInfo);
-        result.put("router", "/");
-        result.put("method", "json");
-        result.put("userinfo",info);
-        result.put("username", loginUser.getUserName());
-        result.put("usertype", loginUser.getUserType());
-        System.out.println(result.toJSONString());
-        return result.toJSONString();
+        jsonUser.put("router", "/");
+        jsonUser.put("method", "json");
+        jsonUser.put("username", loginUser.getUserName());
+        jsonUser.put("usertype", loginUser.getUserType());
+
+        jsonArray.add(jsonUser);
+        jsonArray.add(userInfo);
+        return jsonArray.toJSONString();
     }
 
 
