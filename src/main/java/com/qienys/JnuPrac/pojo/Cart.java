@@ -20,6 +20,7 @@ public class Cart implements Serializable {
     protected Cart(){
 
     }
+
     public Cart(Long productId, Long uid, Long number) {
         this.productId = productId;
         this.uid = uid;
@@ -34,12 +35,12 @@ public class Cart implements Serializable {
         this.id = id;
     }
 
-    public Long getproductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setproductId(Long productid) {
-        this.productId = productid;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Long getUid() {

@@ -11,7 +11,6 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -23,11 +22,9 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String login(@RequestBody JSONObject jsonParam) {
-        Boolean rememberMe = true;
-        System.out.println("json:"+jsonParam.toJSONString());
+        boolean rememberMe = true;
         JSONObject result = new JSONObject();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
-        //System.out.println(user.getUserName()+" "+user.getPassword());
         String password = MD5Utils.encrypt(user.getUserName(), user.getPassword());
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), password,rememberMe);
         Subject subject = SecurityUtils.getSubject();
@@ -78,44 +75,38 @@ public class LoginController {
 
 
     @RequestMapping("/index")
-    public String index(Model model) {
+    public String index() {
         if(SecurityUtils.getSubject().isAuthenticated()){
-            System.out.println("user: login user");
             User user = (User) SecurityUtils.getSubject().getPrincipal();
-            JSONArray jsonArray = new JSONArray();
-            jsonArray.add(user);
-            String jsonString= jsonArray.toJSONString();
-            model.addAttribute("json",jsonString);
+            System.out.println(user.getUserName());
         }
         else{
-            JSONObject json= new JSONObject();
-            json.put("username","guest");
-            json.put("userType","guest");
-            String jsonString= json.toJSONString();
-            model.addAttribute("json",jsonString);
+            System.out.println("guest");
         }
         return "index";
     }
 
+    @RequestMapping("/")
+    public String RedirectIndex() {
+        return "redirect:/index";
+    }
+
+    //获取登陆用户
     @GetMapping("/getLoginUser")
     @ResponseBody
     public String getLoginUser(){
         if(SecurityUtils.getSubject().isAuthenticated()){
-            System.out.println("login user:");
             User user = (User) SecurityUtils.getSubject().getPrincipal();
-            System.out.println(user.getUserName());
-            JSONObject jsonstring  = new JSONObject();
-            jsonstring.put("username",user.getUserName());
-            jsonstring.put("userType",user.getUserType());
-            return jsonstring.toJSONString();
+            JSONObject json  = new JSONObject();
+            json.put("username",user.getUserName());
+            json.put("userType",user.getUserType());
+            return json.toJSONString();
         }
         else{
-            System.out.println("guest");
             JSONObject json= new JSONObject();
             json.put("username","guest");
             json.put("userType","guest");
-            String jsonString= json.toJSONString();
-            return jsonString;
+            return json.toJSONString();
         }
     }
 

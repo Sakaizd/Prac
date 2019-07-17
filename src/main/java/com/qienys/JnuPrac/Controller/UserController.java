@@ -23,28 +23,30 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
+    //获取用户信息
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String postUserInfo(@RequestBody JSONObject jsonParam) {
-        System.out.println(jsonParam.toJSONString());
-        JSONObject jsonUser = new JSONObject();
+        //System.out.println(jsonParam.toJSONString());
+        JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
         User loginUser = userServiceImpl.findByUserName(user.getUserName());
-        System.out.println(loginUser.getUserName());
+        //System.out.println(loginUser.getUserName());
         UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
-        jsonUser.put("router", "/QueryUserInfo");
-        jsonUser.put("method", "json");
-        jsonUser.put("username", user.getUserName());
-        jsonUser.put("userType", user.getUserType());
-        //先放jsonUser
-        jsonArray.add(jsonUser);
+        json.put("router", "/QueryUserInfo");
+        json.put("method", "json");
+        json.put("username", user.getUserName());
+        json.put("userType", user.getUserType());
+        //前端大哥说先放jsonUser
+        jsonArray.add(json);
         jsonArray.add(userInfo);
-        System.out.println(jsonArray.toJSONString());
+        //System.out.println(jsonArray.toJSONString());
         return jsonArray.toJSONString();
     }
 
 
+    //改密码
     @RequestMapping(value = "/passwdModify", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String passwdModify(@RequestBody JSONObject jsonParam) {
@@ -74,6 +76,7 @@ public class UserController {
     }
 
 
+    //测试用
     @RequestMapping("/jsontest")
     @ResponseBody
     public String getTest(){
@@ -85,7 +88,7 @@ public class UserController {
         jsonUser.put("router", "/");
         jsonUser.put("method", "json");
         jsonUser.put("username", loginUser.getUserName());
-        jsonUser.put("usertype", loginUser.getUserType());
+        jsonUser.put("userType", loginUser.getUserType());
 
         jsonArray.add(jsonUser);
         jsonArray.add(userInfo);
