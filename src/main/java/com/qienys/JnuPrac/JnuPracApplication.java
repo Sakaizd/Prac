@@ -5,7 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 
 @SpringBootApplication
 public class JnuPracApplication {
@@ -25,4 +29,13 @@ public class JnuPracApplication {
 		});
 		return tomcat;
 	}
+
+	@Bean
+	public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer(){
+		return factory -> {
+			ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/index.html");
+			factory.addErrorPages(error404Page);
+		};
+	}
+
 }

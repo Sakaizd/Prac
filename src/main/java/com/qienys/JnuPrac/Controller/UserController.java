@@ -50,6 +50,7 @@ public class UserController {
     public String passwdModify(@RequestBody JSONObject jsonParam) {
         System.out.println(jsonParam.toJSONString());
         JSONObject result = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
         //传入数据 username password
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
         System.out.println(user.getUserName()+"  "+user.getPassword());
@@ -60,16 +61,16 @@ public class UserController {
         userServiceImpl.save(loginUser);
 
         UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
-        String Info = JSON.toJSONString(userInfo);
-        result.put("router", "/QueryDataPage/:username");
-        result.put("method", "json");
 
-        result.put("userInfo", Info);
+        result.put("method", "json");
+        result.put("router", "QueryDataPage/:username");
         result.put("msg","ModifySuccess");
         result.put("username", user.getUserName());
         result.put("userType", user.getUserType());
+        jsonArray.add(result);
+        jsonArray.add(userInfo);
 
-        return result.toJSONString();
+        return jsonArray.toJSONString();
     }
 
 

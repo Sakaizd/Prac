@@ -29,10 +29,12 @@ public class MallController {
     @ResponseBody
     public String showItem(){
         JSONArray Products = new JSONArray();
+        JSONObject json = new JSONObject();
         List<Product> ProductList = productServiceImpl.findAll();
+        Products.add(json);
         Products.add(ProductList);
         return Products.toJSONString();
-
     }
+
 
 }

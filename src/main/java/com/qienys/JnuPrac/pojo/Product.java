@@ -13,13 +13,12 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Double price;
     private String name;
-    private String description;
-    private String productType;//类型
-    private String brand;//品牌
-    private String sold;//卖出
+    private String typeName;//类型名
+    private String brandName;//品牌名
+    private String description;//描述
+    private Long sold;//卖出
     private String stock;//库存
     private boolean active;//1:上架 0：下架
     private String url;//图片路径
@@ -28,12 +27,12 @@ public class Product implements Serializable {
 
     }
 
-    public Product(Double price, String name, String description, String productType, String brand, String sold, String stock, boolean active, String url) {
+    public Product(Double price, String name, String typeName, String brandName, String description, Long sold, String stock, boolean active, String url) {
         this.price = price;
         this.name = name;
+        this.typeName = typeName;
+        this.brandName = brandName;
         this.description = description;
-        this.productType = productType;
-        this.brand = brand;
         this.sold = sold;
         this.stock = stock;
         this.active = active;
@@ -64,6 +63,22 @@ public class Product implements Serializable {
         this.name = name;
     }
 
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -72,35 +87,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public String getProductType() {
-        return productType;
-    }
-
-    public void setProductType(String productType) {
-        this.productType = productType;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public String getSold() {
+    public Long getSold() {
         return sold;
     }
 
-    public void setSold(String sold) {
+    public void setSold(Long sold) {
         this.sold = sold;
     }
 
@@ -110,6 +101,14 @@ public class Product implements Serializable {
 
     public void setStock(String stock) {
         this.stock = stock;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getUrl() {
