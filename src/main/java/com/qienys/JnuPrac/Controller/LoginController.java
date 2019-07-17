@@ -96,10 +96,10 @@ public class LoginController {
     @ResponseBody
     public String getLoginUser(){
         if(SecurityUtils.getSubject().isAuthenticated()){
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
             JSONObject json  = new JSONObject();
-            json.put("username",user.getUserName());
-            json.put("userType",user.getUserType());
+            json.put("username",loginUser.getUserName());
+            json.put("userType",loginUser.getUserType());
             return json.toJSONString();
         }
         else{

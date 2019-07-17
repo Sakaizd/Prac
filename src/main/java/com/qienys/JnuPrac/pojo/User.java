@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 //用户
 @Entity
@@ -33,6 +35,7 @@ public class User implements Serializable{
         this.status = status;
         this.userType = userType;
     }
+
 
     public Long getId() {
         return id;
