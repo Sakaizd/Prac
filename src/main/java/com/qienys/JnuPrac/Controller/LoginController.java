@@ -63,10 +63,11 @@ public class LoginController {
             Subject subject = SecurityUtils.getSubject();
             subject.logout();
             //session.removeAttribute("user");
+            result.put("router", "index");
             result.put("code", "200");
             result.put("msg", "退出成功");
         } catch (Exception e) {
-            result.put("code    ", "-1");
+            result.put("code", "-1");
             result.put("msg", "退出异常");
         }
         return result.toJSONString();
