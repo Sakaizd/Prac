@@ -51,9 +51,10 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/jsontest", "anon");
         filterChainDefinitionMap.put("/getAllProducts", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
-        //filterChainDefinitionMap.put("/**", "anon");
-        //需要登陆
+
+        //需要登陆 测试完改回来
         filterChainDefinitionMap.put("/**", "anon");
+        //filterChainDefinitionMap.put("/**", "authc");
 
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
