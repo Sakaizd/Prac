@@ -50,7 +50,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/getLoginUser", "anon");
         filterChainDefinitionMap.put("/jsontest", "anon");
         filterChainDefinitionMap.put("/getAllProducts", "anon");
-        filterChainDefinitionMap.put("/fuck", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
         //filterChainDefinitionMap.put("/**", "anon");
         //需要登陆
