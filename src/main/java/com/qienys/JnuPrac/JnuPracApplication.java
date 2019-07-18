@@ -30,12 +30,12 @@ public class JnuPracApplication {
 		return tomcat;
 	}
 
-	@Bean
+	/*@Bean
 	public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer(){
 		return factory -> {
-			ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/index.html");
+			ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/404.html");
 			factory.addErrorPages(error404Page);
 		};
-	}
+	}*/
 
 }

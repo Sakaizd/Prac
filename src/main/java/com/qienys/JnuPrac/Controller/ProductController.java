@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 @Controller
 public class ProductController {
 
-    private static String UPLOADED_FOLDER = "src/main/resources/static/upload/";
+    private static String UPLOADED_FOLDER = "src/main/resources/upload/";
 
     @GetMapping("/upload")
     public String upload() {
