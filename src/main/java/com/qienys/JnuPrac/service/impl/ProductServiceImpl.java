@@ -3,6 +3,7 @@ package com.qienys.JnuPrac.service.impl;
 import com.qienys.JnuPrac.dao.ProductRepository;
 import com.qienys.JnuPrac.pojo.Product;
 import com.qienys.JnuPrac.service.ProductService;
+import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +25,11 @@ public class ProductServiceImpl implements ProductService {
     public Product findById(Long id) {
         Optional<Product> product=productRepository.findById(id);
         return product.get();
+    }
+
+    @Override
+    public Iterable<Product> findAllById(Iterable<Long> IDs) {
+        Iterable<Product> list = productRepository.findAllById(IDs);
+        return (List<Product>) list;
     }
 }

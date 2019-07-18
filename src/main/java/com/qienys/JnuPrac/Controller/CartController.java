@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qienys.JnuPrac.pojo.Cart;
+import com.qienys.JnuPrac.pojo.Product;
 import com.qienys.JnuPrac.pojo.User;
 import com.qienys.JnuPrac.service.impl.CartServiceImpl;
 import com.qienys.JnuPrac.service.impl.ProductServiceImpl;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -41,12 +44,21 @@ public class CartController {
             cartServiceImpl.save(tempCart);
         }
         else{
+            Product product = productServiceImpl.findById(cart.getProductId());
+            cart.setProductName(product.getName());
+            cart.setBrandName(product.getBrandName());
+            cart.setStock(product.getStock());
+            cart.setDescription(product.getDescription());
+            cart.setTypeName(product.getTypeName());
+            cart.setUrl(product.getUrl());
+            cart.setPrice(product.getPrice());
             cartServiceImpl.save(cart);
         }
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("msg","success");
         return jsonObject.toJSONString();
     }
+
 
     @RequestMapping(value = "/getCartList", method = RequestMethod.GET, produces = "application/json;charset = UTF-8")
     @ResponseBody
@@ -56,11 +68,9 @@ public class CartController {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         List<Cart> cartList = cartServiceImpl.findAllByUid(loginUser.getId());
-
         jsonObject.put("method", "json");
         jsonArray.add(jsonObject);
         jsonArray.add(cartList);
-
         return jsonArray.toJSONString();
     }
 

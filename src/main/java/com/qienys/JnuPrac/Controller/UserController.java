@@ -86,7 +86,7 @@ public class UserController {
         };
         System.out.println(jsonParam.toJSONString());
         VO vo = JSON.parseObject(jsonParam.toJSONString(),VO.class,processor);
-        vo.getAttributes().get("newPassword");
+        vo.getAttributes().get("newpassword");
         //User loginUser = userServiceImpl.findByUserName("user");//test
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
@@ -97,11 +97,11 @@ public class UserController {
 
         if(password.equals(loginUser.getPassword())){
             //修改密码 保存
-            String newPassword = MD5Utils.encrypt(loginUser.getUserName(), vo.getAttributes().get("newPassword").toString());
+            String newPassword = MD5Utils.encrypt(loginUser.getUserName(), vo.getAttributes().get("newpassword").toString());
             loginUser.setPassword(newPassword);
             userServiceImpl.save(loginUser);
             result.put("method", "json");
-            result.put("router", "QueryDataPage/:username");
+            result.put("router", "default");
             result.put("msg","ModifySuccess");
             result.put("username", loginUser.getUserName());
             result.put("userType", loginUser.getUserType());
@@ -118,6 +118,30 @@ public class UserController {
             jsonArray.add(userInfo);
 
         }
+
+        return jsonArray.toJSONString();
+
+    }
+
+    @RequestMapping(value = "/userInfoModify", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String userInfoModify(@RequestBody JSONObject jsonParam) {
+        System.out.println(jsonParam.toJSONString());
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        UserInfo tempUserInfo = JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
+        JSONObject result = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        userInfoServiceImpl.save(tempUserInfo);
+        UserInfo userInfo = JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
+        result.put("method", "json");
+        result.put("router", "QueryDataPage/:username");
+        result.put("msg","ModifySuccess");
+        result.put("username", loginUser.getUserName());
+        result.put("userType", loginUser.getUserType());
+        jsonArray.add(result);
+        jsonArray.add(userInfo);
+
 
         return jsonArray.toJSONString();
 
