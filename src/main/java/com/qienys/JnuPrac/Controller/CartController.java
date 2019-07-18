@@ -14,9 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -32,15 +31,16 @@ public class CartController {
     @PostMapping(value = "/addToCart", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addToCart(@RequestBody JSONObject jsonParam) {
-        //request productId  number
+        System.out.println(jsonParam.toJSONString());
+        //request productId  count
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
         //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        User loginUser = userServiceImpl.findByUserName("user");
+        User loginUser = userServiceImpl.findByUserName("user");//test
         cart.setUid(loginUser.getId());
         //若购物车存在此商品则修改数量 不存在则保存新的数据
         if(cartServiceImpl.existsByUidAndProductId(loginUser.getId(),cart.getProductId())){
             Cart tempCart = cartServiceImpl.findByUidAndAndProductId(loginUser.getId(),cart.getProductId());
-            tempCart.setNumber(tempCart.getNumber()+cart.getNumber());
+            tempCart.setCount(tempCart.getCount()+cart.getCount());
             cartServiceImpl.save(tempCart);
         }
         else{
@@ -52,6 +52,7 @@ public class CartController {
             cart.setTypeName(product.getTypeName());
             cart.setUrl(product.getUrl());
             cart.setPrice(product.getPrice());
+            cart.setActive(product.isActive());
             cartServiceImpl.save(cart);
         }
         JSONObject jsonObject=new JSONObject();
@@ -63,7 +64,7 @@ public class CartController {
     @RequestMapping(value = "/getCartList", method = RequestMethod.GET, produces = "application/json;charset = UTF-8")
     @ResponseBody
     public String getCartList(){
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
         User loginUser = userServiceImpl.findByUserName("user");
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
@@ -89,7 +90,7 @@ public class CartController {
         int sum = 0;
         List<Cart> cartList = cartServiceImpl.findAllByUid(uid);
         for(Cart cart : cartList) {
-            double price = productServiceImpl.findById(cart.getProductId()).getPrice() *cart.getNumber();
+            double price = productServiceImpl.findById(cart.getProductId()).getPrice() *cart.getCount();
             sum += price;
         }
         return sum;

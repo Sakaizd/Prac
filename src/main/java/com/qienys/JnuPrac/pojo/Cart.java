@@ -15,7 +15,7 @@ public class Cart implements Serializable {
     private Long id;
     private Long productId;
     private Long uid;
-    private Long number;
+    private Long count;
     private String productName;
     private Double price;
     private String typeName;//类型名
@@ -30,10 +30,10 @@ public class Cart implements Serializable {
 
     }
 
-    public Cart(Long productId, Long uid, Long number, String productName, Double price, String typeName, String brandName, String description, String stock, boolean active, String url) {
+    public Cart(Long productId, Long uid, Long count, String productName, Double price, String typeName, String brandName, String description, String stock, boolean active, String url) {
         this.productId = productId;
         this.uid = uid;
-        this.number = number;
+        this.count = count;
         this.productName = productName;
         this.price = price;
         this.typeName = typeName;
@@ -68,12 +68,12 @@ public class Cart implements Serializable {
         this.uid = uid;
     }
 
-    public Long getNumber() {
-        return number;
+    public Long getCount() {
+        return count;
     }
 
-    public void setNumber(Long number) {
-        this.number = number;
+    public void setCount(Long count) {
+        this.count = count;
     }
 
     public String getProductName() {

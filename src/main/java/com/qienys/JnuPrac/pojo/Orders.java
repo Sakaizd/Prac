@@ -13,6 +13,7 @@ public class Orders implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private long orderId;
     private Long uid;
     private String username;
     private Double totalPrice;
@@ -28,7 +29,9 @@ public class Orders implements Serializable {
 
     }
 
-    public Orders(Long uid, String username, Double totalPrice, boolean payStatus, boolean postStatus, String telephone, String name, String address) {
+
+    public Orders(long orderId, Long uid, String username, Double totalPrice, boolean payStatus, boolean postStatus, String telephone, String name, String address) {
+        this.orderId = orderId;
         this.uid = uid;
         this.username = username;
         this.totalPrice = totalPrice;
@@ -39,20 +42,28 @@ public class Orders implements Serializable {
         this.address = address;
     }
 
-    public Long getUid() {
-        return uid;
-    }
-
-    public void setUid(Long uid) {
-        this.uid = uid;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
+    }
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
     }
 
     public String getUsername() {
