@@ -2,7 +2,6 @@ package com.qienys.JnuPrac.config;
 
 import java.util.LinkedHashMap;
 
-import com.qienys.JnuPrac.shiro.ShiroRealm;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -24,7 +23,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         shiroFilterFactoryBean.setLoginUrl("/");
         shiroFilterFactoryBean.setSuccessUrl("/index");
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/index");
 
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 
@@ -38,6 +37,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/img/**", "anon");
         filterChainDefinitionMap.put("/index", "anon");
         filterChainDefinitionMap.put("/register", "anon");
+        filterChainDefinitionMap.put("/upload", "anon");
+        filterChainDefinitionMap.put("/uploadStatus", "anon");
         filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/getLoginUser", "anon");
@@ -45,9 +46,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/getAllProducts", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
 
-        //需要登陆 测试完改回来
-        filterChainDefinitionMap.put("/**", "anon");
-        //filterChainDefinitionMap.put("/**", "authc");
+        //需要登陆
+        //filterChainDefinitionMap.put("/**", "anon");//test
+        filterChainDefinitionMap.put("/**", "user");
 
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -97,4 +98,6 @@ public class ShiroConfig {
         cookieRememberMeManager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
         return cookieRememberMeManager;
     }
+
+
 }

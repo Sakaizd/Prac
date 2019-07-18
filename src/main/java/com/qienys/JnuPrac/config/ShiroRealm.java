@@ -1,4 +1,4 @@
-package com.qienys.JnuPrac.shiro;
+package com.qienys.JnuPrac.config;
 
 
 import com.qienys.JnuPrac.pojo.User;
@@ -11,6 +11,7 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class ShiroRealm extends AuthorizingRealm {
         if (!password.equals(user.getPassword())) {
             throw new IncorrectCredentialsException("用户名或密码错误！");
         }
-        if (user.getStatus().equals("0")) {
+        if (!user.isStatus()) {
             throw new LockedAccountException("账号已被锁定,请联系管理员！");
         }
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());

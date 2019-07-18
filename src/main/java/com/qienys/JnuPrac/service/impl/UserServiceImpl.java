@@ -6,6 +6,8 @@ import com.qienys.JnuPrac.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -25,7 +27,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsById(Long id) {
-        return true;
+        return userRepository.existsById(id);
+    }
+
+    @Override
+    public boolean existsByUserName (String username) {
+        return userRepository.existsByUserName(username);
+    }
+
+    @Override
+    public List<User> findAll() {
+        Iterable<User> list = userRepository.findAll();
+        return  (List<User>) list;
     }
 
 }

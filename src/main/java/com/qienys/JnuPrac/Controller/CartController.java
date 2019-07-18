@@ -9,6 +9,7 @@ import com.qienys.JnuPrac.pojo.User;
 import com.qienys.JnuPrac.service.impl.CartServiceImpl;
 import com.qienys.JnuPrac.service.impl.ProductServiceImpl;
 import com.qienys.JnuPrac.service.impl.UserServiceImpl;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,8 @@ public class CartController {
         System.out.println(jsonParam.toJSONString());
         //request productId  count
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        User loginUser = userServiceImpl.findByUserName("user");//test
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //User loginUser = userServiceImpl.findByUserName("user");//test
         cart.setUid(loginUser.getId());
         //若购物车存在此商品则修改数量 不存在则保存新的数据
         if(cartServiceImpl.existsByUidAndProductId(loginUser.getId(),cart.getProductId())){
@@ -64,8 +65,8 @@ public class CartController {
     @RequestMapping(value = "/getCartList", method = RequestMethod.GET, produces = "application/json;charset = UTF-8")
     @ResponseBody
     public String getCartList(){
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
-        User loginUser = userServiceImpl.findByUserName("user");
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
+        //User loginUser = userServiceImpl.findByUserName("user");
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         List<Cart> cartList = cartServiceImpl.findAllByUid(loginUser.getId());
@@ -78,8 +79,8 @@ public class CartController {
     @PostMapping(value = "/changeCart", produces = "application/json;charset = UTF-8")
     @ResponseBody
     public String changeCart(@RequestBody JSONObject jsonParam){
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
-        User loginUser = userServiceImpl.findByUserName("user");
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
+        //User loginUser = userServiceImpl.findByUserName("user");
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
         Cart tempCart = cartServiceImpl.findByUidAndAndProductId(loginUser.getId(),cart.getProductId());
         tempCart.setCount(tempCart.getCount()+cart.getCount());
@@ -94,8 +95,8 @@ public class CartController {
     @GetMapping("getTotalPrice")
     @ResponseBody
     public String getTotalPrice(){
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        User loginUser = userServiceImpl.findByUserName("user");
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //User loginUser = userServiceImpl.findByUserName("user");
         JSONObject jsonObject = new JSONObject();
         String totalPrice = Double.toString((cal_totalPrice(loginUser.getId())));
         jsonObject.put("totalPrice",totalPrice);

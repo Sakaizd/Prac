@@ -12,12 +12,11 @@ import com.qienys.JnuPrac.util.MD5Utils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -34,12 +33,21 @@ public class UserController {
     public String register(@RequestBody JSONObject jsonParam) {
         //System.out.println(jsonParam.toJSONString());
         JSONObject json = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
         User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
+        if(!userServiceImpl.existsByUserName(user.getUserName())){
+            user.setPassword(MD5Utils.encrypt(user.getUserName(),user.getPassword()));
+            user.setCreateTime(new Date());
+            user.setStatus(true);
+            user.setUserType("user");
+            userServiceImpl.save(user);
+            json.put("msg","register success");
+            json.put("router","default");
+        }else {
+            json.put("msg","username already exist");
+            json.put("router","register");
+        }
 
-
-
-        return jsonArray.toJSONString();
+        return json.toJSONString();
     }
     //获取用户信息
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -160,6 +168,18 @@ public class UserController {
 
     }
 
+
+    //管理员用
+    @ResponseBody
+    @GetMapping("getAllUsers")
+    public String getAllUsers(){
+        JSONArray jsonArray = new JSONArray();
+        JSONObject json = new JSONObject();
+        List<User> userList = userServiceImpl.findAll();
+        jsonArray.add(json.toJSONString());
+        jsonArray.add(userList);
+        return jsonArray.toJSONString();
+    }
 
     //测试用
     @RequestMapping("/jsontest")

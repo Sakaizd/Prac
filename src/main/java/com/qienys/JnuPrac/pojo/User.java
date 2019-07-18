@@ -6,8 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 //用户
 @Entity
@@ -21,21 +19,20 @@ public class User implements Serializable{
     private String userName;
     private String password;
     private Date createTime;
-    private String status;//1 可用 0 锁定
+    private boolean status;//1 可用 0 锁定
     private String userType;//admin,user
 
     protected User(){
 
     }
 
-    public User(String userName, String password, Date createTime, String status, String userType) {
+    public User(String userName, String password, Date createTime, boolean status, String userType) {
         this.userName = userName;
         this.password = password;
         this.createTime = createTime;
         this.status = status;
         this.userType = userType;
     }
-
 
     public Long getId() {
         return id;
@@ -69,11 +66,11 @@ public class User implements Serializable{
         this.createTime = createTime;
     }
 
-    public String getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

@@ -10,6 +10,7 @@ import com.qienys.JnuPrac.pojo.User;
 import com.qienys.JnuPrac.service.impl.*;
 import com.qienys.JnuPrac.util.snowflake;
 import netscape.javascript.JSObject;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +45,8 @@ public class OrderController {
         snowflake idWorker = new snowflake(0,0);
         Long orderId = idWorker.nextId();
 
-        User loginUser = userServiceImpl.findByUserName("user");//test
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
 
         //index 0 传给orders表
         JSONObject orderInfo = jsonParam.getJSONObject(0) ;
@@ -106,8 +107,8 @@ public class OrderController {
     @ResponseBody
     @GetMapping(value = "/getOrderList")
     public String getOrderList(){
-        User loginUser = userServiceImpl.findByUserName("user");//test
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         List<Orders> ordersList= ordersServiceImpl.findAllByUid(loginUser.getId());
         JSONArray jsonArray = new JSONArray();
         JSONObject json = new JSONObject();
@@ -122,8 +123,8 @@ public class OrderController {
     @ResponseBody
     @PostMapping(value = "/getOrderProducts", produces = "application/json;charset=UTF-8")
     public String getOrderProducts(@RequestBody JSONObject jsonParam){
-        User loginUser = userServiceImpl.findByUserName("user");//test
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         Orders orders= JSON.parseObject(jsonParam.toJSONString(),Orders.class);
         List<OrderProducts> orderProductsList= orderProductsServiceImpl.findAllByOrderId(orders.getOrderId());
         JSONArray jsonArray = new JSONArray();
