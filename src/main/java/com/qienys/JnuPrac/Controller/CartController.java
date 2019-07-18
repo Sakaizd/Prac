@@ -75,6 +75,22 @@ public class CartController {
         return jsonArray.toJSONString();
     }
 
+    @PostMapping(value = "/changeCart", produces = "application/json;charset = UTF-8")
+    @ResponseBody
+    public String changeCart(@RequestBody JSONObject jsonParam){
+        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
+        User loginUser = userServiceImpl.findByUserName("user");
+        Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
+        Cart tempCart = cartServiceImpl.findByUidAndAndProductId(loginUser.getId(),cart.getProductId());
+        tempCart.setCount(tempCart.getCount()+cart.getCount());
+        cartServiceImpl.save(tempCart);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("method", "json");
+        jsonObject.put("msg","success");
+        jsonObject.put("count",tempCart.getCount());
+        return jsonObject.toJSONString();
+    }
+
     @GetMapping("getTotalPrice")
     @ResponseBody
     public String getTotalPrice(){
