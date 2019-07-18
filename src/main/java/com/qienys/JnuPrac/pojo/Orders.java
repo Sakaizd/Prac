@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 
 //订单
 @Entity
@@ -13,33 +14,31 @@ public class Orders implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private long orderId;
+    private Long orderId;
     private Long uid;
-    private String username;
     private Double totalPrice;
-    private boolean payStatus; //1. pay 0.not pay 支付？
-    private boolean postStatus;//1. post 0.not post 发货？
     private String telephone;//联系人phone
     private String name;//联系人name
     private String address;//送货地址
-
+    private boolean payStatus; //1. pay 0.not pay 支付？
+    private boolean postStatus;//1. post 0.not post 发货？
+    private Date createTime;
 
 
     protected Orders(){
 
     }
 
-
-    public Orders(long orderId, Long uid, String username, Double totalPrice, boolean payStatus, boolean postStatus, String telephone, String name, String address) {
+    public Orders(Long orderId, Long uid, Double totalPrice, String telephone, String name, String address, boolean payStatus, boolean postStatus, Date createTime) {
         this.orderId = orderId;
         this.uid = uid;
-        this.username = username;
         this.totalPrice = totalPrice;
-        this.payStatus = payStatus;
-        this.postStatus = postStatus;
         this.telephone = telephone;
         this.name = name;
         this.address = address;
+        this.payStatus = payStatus;
+        this.postStatus = postStatus;
+        this.createTime = createTime;
     }
 
     public Long getId() {
@@ -50,11 +49,11 @@ public class Orders implements Serializable {
         this.id = id;
     }
 
-    public long getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
@@ -66,36 +65,12 @@ public class Orders implements Serializable {
         this.uid = uid;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public Double getTotalPrice() {
         return totalPrice;
     }
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public boolean isPayStatus() {
-        return payStatus;
-    }
-
-    public void setPayStatus(boolean payStatus) {
-        this.payStatus = payStatus;
-    }
-
-    public boolean isPostStatus() {
-        return postStatus;
-    }
-
-    public void setPostStatus(boolean postStatus) {
-        this.postStatus = postStatus;
     }
 
     public String getTelephone() {
@@ -121,4 +96,29 @@ public class Orders implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public boolean isPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(boolean payStatus) {
+        this.payStatus = payStatus;
+    }
+
+    public boolean isPostStatus() {
+        return postStatus;
+    }
+
+    public void setPostStatus(boolean postStatus) {
+        this.postStatus = postStatus;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 }
+

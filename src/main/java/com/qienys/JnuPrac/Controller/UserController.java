@@ -29,6 +29,19 @@ public class UserController {
     private UserServiceImpl userServiceImpl;
 
     //获取用户信息
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String register(@RequestBody JSONObject jsonParam) {
+        //System.out.println(jsonParam.toJSONString());
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        User user = JSON.parseObject(jsonParam.toJSONString(),User.class);
+
+
+
+        return jsonArray.toJSONString();
+    }
+    //获取用户信息
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String postUserInfo(@RequestBody JSONObject jsonParam) {
@@ -51,7 +64,7 @@ public class UserController {
     }
 
     //改密码用静态类
-    public static class VO {
+    private static class VO {
         private Long id;
         private String password;
         private Map<String, Object> attributes = new HashMap<String, Object>();
@@ -77,7 +90,7 @@ public class UserController {
     @RequestMapping(value = "/passwdModify", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String passwdModify(@RequestBody JSONObject jsonParam) {
-        //newPassword password(old)
+        //newpassword password
         ExtraProcessor processor = new ExtraProcessor() {
             public void processExtra(Object object, String key, Object value) {
                 VO vo = (VO) object;

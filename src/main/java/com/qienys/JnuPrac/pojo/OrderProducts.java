@@ -16,19 +16,21 @@ public class OrderProducts implements Serializable {
     private Long id;
     private Long orderId;//订单id
     private Long productId;//商品id
-    private String name;//商品名
-    private Long number;//数量
+    private String productName;//商品名
+    private String description;
+    private Long count;//数量
     private Double price;//价格
 
     protected OrderProducts(){
 
     }
 
-    public OrderProducts(Long orderId, Long productId, String name, Long number, Double price) {
+    public OrderProducts(Long orderId, Long productId, String productName, String description, Long count, Double price) {
         this.orderId = orderId;
         this.productId = productId;
-        this.name = name;
-        this.number = number;
+        this.productName = productName;
+        this.description = description;
+        this.count = count;
         this.price = price;
     }
 
@@ -48,20 +50,36 @@ public class OrderProducts implements Serializable {
         this.orderId = orderId;
     }
 
-    public String getName() {
-        return name;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
-    public Long getNumber() {
-        return number;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setNumber(Long number) {
-        this.number = number;
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
     }
 
     public Double getPrice() {
@@ -70,13 +88,5 @@ public class OrderProducts implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
     }
 }

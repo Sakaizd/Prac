@@ -78,6 +78,7 @@ public class LoginController {
 
     @RequestMapping("/index")
     public String index() {
+        System.out.println("/index");
         if(SecurityUtils.getSubject().isAuthenticated()){
             User user = (User) SecurityUtils.getSubject().getPrincipal();
             System.out.println(user.getUserName());
@@ -90,7 +91,16 @@ public class LoginController {
 
     @RequestMapping("/")
     public String RedirectIndex() {
-        return "redirect:/index";
+        System.out.println("/");
+        if(SecurityUtils.getSubject().isAuthenticated()){
+            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            System.out.println(user.getUserName());
+        }
+        else{
+            System.out.println("guest");
+        }
+        return "index";
+        //return "redirect:/index";
     }
 
     //获取登陆用户
@@ -100,12 +110,14 @@ public class LoginController {
         if(SecurityUtils.getSubject().isAuthenticated()){
             User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
             JSONObject json  = new JSONObject();
+            json.put("router","default");
             json.put("username",loginUser.getUserName());
             json.put("userType",loginUser.getUserType());
             return json.toJSONString();
         }
         else{
             JSONObject json= new JSONObject();
+            json.put("router","logoutFail");
             json.put("username","guest");
             json.put("userType","guest");
             return json.toJSONString();

@@ -102,7 +102,7 @@ public class CartController {
         return jsonObject.toJSONString();
     }
 
-    public double cal_totalPrice(Long uid) {
+    private double cal_totalPrice(Long uid) {
         int sum = 0;
         List<Cart> cartList = cartServiceImpl.findAllByUid(uid);
         for(Cart cart : cartList) {
