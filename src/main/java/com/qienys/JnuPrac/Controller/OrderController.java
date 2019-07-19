@@ -35,18 +35,17 @@ public class OrderController {
 
 
 
-
     @PostMapping(value = "/postCartList", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String orderGen(@RequestBody JSONArray jsonParam){
-        //telephone name address
+        //telephone name address Cartlist
 
-        //订单号生产
+        //订单号生成
         snowflake idWorker = new snowflake(0,0);
         Long orderId = idWorker.nextId();
 
-        //User loginUser = userServiceImpl.findByUserName("user");//test
-        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        User loginUser = userServiceImpl.findByUserName("user");//test
+        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
 
         //index 0 传给orders表
         JSONObject orderInfo = jsonParam.getJSONObject(0) ;
@@ -56,14 +55,10 @@ public class OrderController {
 
         if(!jsonParam.isEmpty()){
             List<Cart> cartList = JSON.parseArray(jsonParam.toJSONString(),Cart.class);
-
-            //List<Cart> cartList = cartServiceImpl.findAllByUid(uid);
-
             for(Cart cart : cartList) {
-                System.out.println("cart"+cart.getProductId()+" "+cart.getCount());
+                //System.out.println("cart pid"+cart.getProductId()+" count"+cart.getCount());
                 Cart tempCart = cartServiceImpl.findByUidAndAndProductId(loginUser.getId(),cart.getProductId());
-                System.out.println("tempcart"+tempCart.getProductId()+" "+tempCart.getCount());
-
+                //System.out.println("tempcart pid"+tempCart.getProductId()+" count"+tempCart.getCount());
                 orderProductsServiceImpl.save(
                         new OrderProducts (
                                 orderId,
@@ -72,6 +67,7 @@ public class OrderController {
                                 tempCart.getDescription(),
                                 cart.getCount(),
                                 tempCart.getPrice()));
+                cartServiceImpl.deleteByUidAndProductId(loginUser.getId(),cart.getProductId());
 
             }
 
@@ -95,13 +91,14 @@ public class OrderController {
             jsonObject.put("msg","success");
         }
         else{
-            jsonObject.put("router","");//去看订单
+            jsonObject.put("router","default");//去看订单
             jsonObject.put("msg","emptyList");
         }
 
 
         return jsonObject.toJSONString();
     }
+
 
 
     @ResponseBody
@@ -115,7 +112,6 @@ public class OrderController {
         json.put("router","");
         jsonArray.add(json);
         jsonArray.add(ordersList);
-
 
         return jsonArray.toJSONString();
     }

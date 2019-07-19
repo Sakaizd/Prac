@@ -9,4 +9,5 @@ public interface CartService {
     void save (Cart cart);
     Boolean existsByUidAndProductId(Long uid,Long productId);
     Cart findByUidAndAndProductId(Long uid,Long productId);
+    void deleteByUidAndProductId(Long uid,Long productId);
 }

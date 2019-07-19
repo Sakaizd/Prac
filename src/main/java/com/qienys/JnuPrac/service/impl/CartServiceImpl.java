@@ -34,4 +34,9 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findByUidAndAndProductId(uid,productId);
         return cart;
     }
+
+    @Override
+    public void deleteByUidAndProductId(Long uid, Long productId) {
+        cartRepository.deleteByUidAndProductId(uid,productId);
+    }
 }

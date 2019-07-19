@@ -89,19 +89,6 @@ public class LoginController {
         return "index";
     }
 
-    @RequestMapping("/")
-    public String RedirectIndex() {
-        System.out.println("/");
-        if(SecurityUtils.getSubject().isAuthenticated()){
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
-            System.out.println(user.getUserName());
-        }
-        else{
-            System.out.println("guest");
-        }
-        return "index";
-        //return "redirect:/index";
-    }
 
     //获取登陆用户
     @GetMapping("/getLoginUser")
@@ -127,7 +114,7 @@ public class LoginController {
 
 
     @GetMapping(value = {"/LoginPage","/RegisterPage","/QueryDataPage/user","/ModifyPage",
-    "/ModifyPassWord","/MyCart"})
+    "/ModifyPassWord","/MyCart","/"})
     public String redirect(){
         return "redirect:/index";
     }

@@ -1,5 +1,6 @@
 package com.qienys.JnuPrac.pojo;
 
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,15 +14,17 @@ public class Cart implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long productId;
     private Long uid;
     private Long count;
     private String productName;
     private Double price;
-    private String typeName;//类型名
-    private String brandName;//品牌名
+    //private String typeName;//类型名
+    //private String brandName;//品牌名
+    private Long brandId;
+    private Long typeId;
     private String description;//描述
-    private String stock;//库存
     private boolean active;//1:上架 0：下架
     private String url;//图片路径
 
@@ -30,16 +33,15 @@ public class Cart implements Serializable {
 
     }
 
-    public Cart(Long productId, Long uid, Long count, String productName, Double price, String typeName, String brandName, String description, String stock, boolean active, String url) {
+    public Cart(Long productId, Long uid, Long count, String productName, Double price, Long brandId, Long typeId, String description, boolean active, String url) {
         this.productId = productId;
         this.uid = uid;
         this.count = count;
         this.productName = productName;
         this.price = price;
-        this.typeName = typeName;
-        this.brandName = brandName;
+        this.brandId = brandId;
+        this.typeId = typeId;
         this.description = description;
-        this.stock = stock;
         this.active = active;
         this.url = url;
     }
@@ -92,20 +94,20 @@ public class Cart implements Serializable {
         this.price = price;
     }
 
-    public String getTypeName() {
-        return typeName;
+    public Long getBrandId() {
+        return brandId;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setBrandId(Long brandId) {
+        this.brandId = brandId;
     }
 
-    public String getBrandName() {
-        return brandName;
+    public Long getTypeId() {
+        return typeId;
     }
 
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
     }
 
     public String getDescription() {
@@ -114,14 +116,6 @@ public class Cart implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getStock() {
-        return stock;
-    }
-
-    public void setStock(String stock) {
-        this.stock = stock;
     }
 
     public boolean isActive() {

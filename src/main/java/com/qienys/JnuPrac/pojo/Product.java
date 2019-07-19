@@ -15,11 +15,13 @@ public class Product implements Serializable {
     private Long id;
     private Double price;
     private String name;
-    private String typeName;//类型名
-    private String brandName;//品牌名
+    //private String typeName;//类型名
+    //private String brandName;//品牌名
+    private Long typeId;
+    private Long brandId;
     private String description;//描述
     private Long sold;//卖出
-    private String stock;//库存
+    private Long stock;//库存
     private boolean active;//1:上架 0：下架
     private String url;//图片路径
 
@@ -27,11 +29,23 @@ public class Product implements Serializable {
 
     }
 
-    public Product(Double price, String name, String typeName, String brandName, String description, Long sold, String stock, boolean active, String url) {
+/*    public Product(Double price, String name, String typeName, String brandName, String description, Long sold, String stock, boolean active, String url) {
         this.price = price;
         this.name = name;
         this.typeName = typeName;
         this.brandName = brandName;
+        this.description = description;
+        this.sold = sold;
+        this.stock = stock;
+        this.active = active;
+        this.url = url;
+    }*/
+
+    public Product(Double price, String name, Long typeId, Long brandId, String description, Long sold, Long stock, boolean active, String url) {
+        this.price = price;
+        this.name = name;
+        this.typeId = typeId;
+        this.brandId = brandId;
         this.description = description;
         this.sold = sold;
         this.stock = stock;
@@ -63,20 +77,20 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public String getTypeName() {
-        return typeName;
+    public Long getTypeId() {
+        return typeId;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
     }
 
-    public String getBrandName() {
-        return brandName;
+    public Long getBrandId() {
+        return brandId;
     }
 
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
+    public void setBrandId(Long brandId) {
+        this.brandId = brandId;
     }
 
     public String getDescription() {
@@ -95,11 +109,11 @@ public class Product implements Serializable {
         this.sold = sold;
     }
 
-    public String getStock() {
+    public Long getStock() {
         return stock;
     }
 
-    public void setStock(String stock) {
+    public void setStock(Long stock) {
         this.stock = stock;
     }
 
@@ -119,3 +133,4 @@ public class Product implements Serializable {
         this.url = url;
     }
 }
+
