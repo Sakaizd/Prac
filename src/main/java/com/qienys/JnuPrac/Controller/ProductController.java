@@ -56,7 +56,7 @@ public class ProductController {
         return "uploadStatus";
     }
 
-    @PostMapping(value = "/userInfoModify", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/addProducts", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addProducts(@RequestBody JSONObject jsonParam){
         Product product = JSON.parseObject(jsonParam.toJSONString(),Product.class);

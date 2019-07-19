@@ -44,8 +44,8 @@ public class OrderController {
         snowflake idWorker = new snowflake(0,0);
         Long orderId = idWorker.nextId();
 
-        User loginUser = userServiceImpl.findByUserName("user");//test
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
 
         //index 0 传给orders表
         JSONObject orderInfo = jsonParam.getJSONObject(0) ;
@@ -116,17 +116,25 @@ public class OrderController {
         return jsonArray.toJSONString();
     }
 
+    //根据订单号查商品
     @ResponseBody
-    @PostMapping(value = "/getOrderProducts", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/getOrderProducts", produces = "application/json;charset=UTF-8")
     public String getOrderProducts(@RequestBody JSONObject jsonParam){
-        //User loginUser = userServiceImpl.findByUserName("user");//test
-        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        Orders orders= JSON.parseObject(jsonParam.toJSONString(),Orders.class);
-        List<OrderProducts> orderProductsList= orderProductsServiceImpl.findAllByOrderId(orders.getOrderId());
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.add(orderProductsList);
-
-        return jsonArray.toJSONString();
+        //request orderId
+        User loginUser = userServiceImpl.findByUserName("user");//test
+        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        Orders tempOrder= JSON.parseObject(jsonParam.toJSONString(),Orders.class);
+        Orders orders=ordersServiceImpl.findByOrderId(tempOrder.getOrderId());
+        if(ordersServiceImpl.existsByOrderId(orders.getOrderId())&&
+        orders.getUid()==loginUser.getId()){
+            List<OrderProducts> orderProductsList= orderProductsServiceImpl.findAllByOrderId(orders.getOrderId());
+            return JSON.toJSONString(orderProductsList);
+        }
+        else{
+            JSONObject json = new JSONObject();
+            json.put("msg","Wrong OrderId");
+            return json.toJSONString();
+        }
     }
 
 

@@ -8,4 +8,6 @@ public interface OrdersService {
     void save(Orders orders);
     List<Orders> findAllByUid(Long uid);
     List<Orders> findAll();
+    boolean existsByOrderId(Long orderId);
+    Orders findByOrderId(Long orderID);
 }

@@ -1,7 +1,6 @@
 package com.qienys.JnuPrac.Controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qienys.JnuPrac.pojo.User;
 import com.qienys.JnuPrac.service.impl.UserServiceImpl;

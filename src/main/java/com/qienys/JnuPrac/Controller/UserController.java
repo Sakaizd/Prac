@@ -52,7 +52,7 @@ public class UserController {
     //获取用户信息
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String postUserInfo(@RequestBody JSONObject jsonParam) {
+    public String getUserInfo(@RequestBody JSONObject jsonParam) {
         //System.out.println(jsonParam.toJSONString());
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
@@ -162,8 +162,6 @@ public class UserController {
         result.put("userType", loginUser.getUserType());
         jsonArray.add(result);
         jsonArray.add(userInfo);
-
-
         return jsonArray.toJSONString();
 
     }

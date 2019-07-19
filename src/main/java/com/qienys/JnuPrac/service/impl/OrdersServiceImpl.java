@@ -31,4 +31,15 @@ public class OrdersServiceImpl implements OrdersService {
         Iterable<Orders> list = ordersRepository.findAll();
         return  (List<Orders>) list;
     }
+
+    @Override
+    public boolean existsByOrderId(Long orderId) {
+        return ordersRepository.existsByOrderId(orderId);
+    }
+
+    @Override
+    public Orders findByOrderId(Long orderID) {
+        Orders orders = ordersRepository.findByOrderId(orderID);
+        return orders;
+    }
 }

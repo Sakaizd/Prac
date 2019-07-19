@@ -35,17 +35,16 @@ public class CartController {
     @PostMapping(value = "/addToCart", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addToCart(@RequestBody JSONObject jsonParam) {
-        System.out.println(jsonParam.toJSONString());
         //request productId  count
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         //User loginUser = userServiceImpl.findByUserName("user");//test
         cart.setUid(loginUser.getId());
-        Product tempproduct = productServiceImpl.findById(cart.getProductId());
+        Product tempProduct = productServiceImpl.findById(cart.getProductId());
         cart.setBrandId(productPropertiesServiceImpl.
-                findByBrandIdAndAndTypeId(tempproduct.getBrandId(),tempproduct.getTypeId()).getBrandId());
+                findByBrandIdAndAndTypeId(tempProduct.getBrandId(),tempProduct.getTypeId()).getBrandId());
         cart.setTypeId(productPropertiesServiceImpl.
-                findByBrandIdAndAndTypeId(tempproduct.getBrandId(),tempproduct.getTypeId()).getTypeId());
+                findByBrandIdAndAndTypeId(tempProduct.getBrandId(),tempProduct.getTypeId()).getTypeId());
         //若购物车存在此商品则修改数量 不存在则保存新的数据
         if(cartServiceImpl.existsByUidAndProductId(loginUser.getId(),cart.getProductId())){
             Cart tempCart = cartServiceImpl.findByUidAndAndProductId(loginUser.getId(),cart.getProductId());
@@ -55,9 +54,7 @@ public class CartController {
         else{
             Product product = productServiceImpl.findById(cart.getProductId());
             cart.setProductName(product.getName());
-            //cart.setBrandName(product.getBrandName());
             cart.setDescription(product.getDescription());
-            //cart.setTypeName(product.getTypeName());
             cart.setUrl(product.getUrl());
             cart.setPrice(product.getPrice());
             cart.setActive(product.isActive());
@@ -72,8 +69,8 @@ public class CartController {
     @RequestMapping(value = "/getCartList", method = RequestMethod.GET, produces = "application/json;charset = UTF-8")
     @ResponseBody
     public String getCartList(){
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
-        User loginUser = userServiceImpl.findByUserName("user");
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
+        //User loginUser = userServiceImpl.findByUserName("user");
 
         List<Cart> cartList = cartServiceImpl.findAllByUid(loginUser.getId());
         JSON.toJSONString(cartList);
@@ -100,16 +97,14 @@ public class CartController {
     @PostMapping(value = "/deleteFromCart", produces = "application/json;charset = UTF-8")
     @ResponseBody
     public String deleteFromCart(@RequestBody JSONObject jsonParam){
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        User loginUser = userServiceImpl.findByUserName("user");//test
+        //take productId
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //User loginUser = userServiceImpl.findByUserName("user");//test
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
-        Cart tempCart = cartServiceImpl.findByUidAndAndProductId(loginUser.getId(),cart.getProductId());
-        tempCart.setCount(tempCart.getCount()+cart.getCount());
-        cartServiceImpl.save(tempCart);
+        cartServiceImpl.deleteByUidAndProductId(loginUser.getId(),cart.getProductId());
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("method", "json");
-        jsonObject.put("msg","success");
-        jsonObject.put("count",tempCart.getCount());
+        jsonObject.put("msg","DeleteSuccess");
+        jsonObject.put("router","MyCart");
         return jsonObject.toJSONString();
     }
 
