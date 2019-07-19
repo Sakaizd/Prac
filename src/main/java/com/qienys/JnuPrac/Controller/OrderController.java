@@ -35,7 +35,7 @@ public class OrderController {
 
 
 
-    @PostMapping(value = "/postCartList", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/orderGen", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String orderGen(@RequestBody JSONArray jsonParam){
         //telephone name address Cartlist
@@ -44,7 +44,7 @@ public class OrderController {
         snowflake idWorker = new snowflake(0,0);
         Long orderId = idWorker.nextId();
 
-        //User loginUser = userServiceImpl.findByUserName("user");//test
+            // User loginUser = userServiceImpl.findByUserName("user");//test
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
 
         //index 0 传给orders表
@@ -87,7 +87,7 @@ public class OrderController {
             ordersServiceImpl.save(order);
 
 
-            jsonObject.put("router","");//去看订单
+            jsonObject.put("router","myOrders");//去看订单
             jsonObject.put("msg","success");
         }
         else{
