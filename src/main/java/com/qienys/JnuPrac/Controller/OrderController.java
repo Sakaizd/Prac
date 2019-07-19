@@ -121,8 +121,8 @@ public class OrderController {
     @GetMapping(value = "/getOrderProducts", produces = "application/json;charset=UTF-8")
     public String getOrderProducts(@RequestBody JSONObject jsonParam){
         //request orderId
-        User loginUser = userServiceImpl.findByUserName("user");//test
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         Orders tempOrder= JSON.parseObject(jsonParam.toJSONString(),Orders.class);
         Orders orders=ordersServiceImpl.findByOrderId(tempOrder.getOrderId());
         if(ordersServiceImpl.existsByOrderId(orders.getOrderId())&&
