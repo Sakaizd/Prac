@@ -81,6 +81,7 @@ public class CartController {
     @PostMapping(value = "/changeCart", produces = "application/json;charset = UTF-8")
     @ResponseBody
     public String changeCart(@RequestBody JSONObject jsonParam){
+        //System.out.println(jsonParam.toJSONString());
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
         //User loginUser = userServiceImpl.findByUserName("user");
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
