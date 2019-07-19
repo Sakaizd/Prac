@@ -144,7 +144,7 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/userInfoModify", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/userInfoModify", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String userInfoModify(@RequestBody JSONObject jsonParam) {
         System.out.println(jsonParam.toJSONString());
