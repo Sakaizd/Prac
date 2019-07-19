@@ -88,7 +88,6 @@ public class CartController {
         tempCart.setCount(tempCart.getCount()+cart.getCount());
         cartServiceImpl.save(tempCart);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("method", "json");
         jsonObject.put("msg","success");
         jsonObject.put("count",tempCart.getCount());
         return jsonObject.toJSONString();

@@ -142,17 +142,49 @@ public class OrderController {
     @ResponseBody
     @GetMapping(value = "/getAllOrders")
     public String getAllOrders(){
-
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        List<Orders> ordersList= ordersServiceImpl.findAll();
-        JSONArray jsonArray = new JSONArray();
-        JSONObject json = new JSONObject();
-        json.put("router","");
-        jsonArray.add(json);
-        jsonArray.add(ordersList);
-
-        return jsonArray.toJSONString();
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        JSONObject jsonObject = new JSONObject();
+        if(SecurityUtils.getSubject().isAuthenticated()){
+            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            System.out.println(user.getUserName());
+            if(loginUser.getUserType().equals("admin")) {
+                List<Orders> ordersList = ordersServiceImpl.findAll();
+                return JSON.toJSONString(ordersList);
+            }
+        }
+        else {
+            jsonObject.put("msg","UnAuthorization");
+            jsonObject.put("router","404");
+        }
+        return jsonObject.toJSONString();
     }
 
+    @ResponseBody
+    @PostMapping(value = "/setOrderPay", produces = "application/json;charset=UTF-8")
+    public String setOrderPay(@RequestBody JSONObject JsonParam){
+        //request orderID
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        Orders orders = JSON.parseObject(JsonParam.toJSONString(),Orders.class);
+        Orders tempOrder = ordersServiceImpl.findByOrderId(orders.getOrderId());
+        tempOrder.setPayStatus(true);
+        ordersServiceImpl.save(tempOrder);
+        JSONObject json = new JSONObject();
+        json.put("msg","success");
+        return json.toJSONString();
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/setOrderPost", produces = "application/json;charset=UTF-8")
+    public String setOrderPost(@RequestBody JSONObject JsonParam){
+        //request orderID
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        Orders orders = JSON.parseObject(JsonParam.toJSONString(),Orders.class);
+        Orders tempOrder = ordersServiceImpl.findByOrderId(orders.getOrderId());
+        tempOrder.setPostStatus(true);
+        ordersServiceImpl.save(tempOrder);
+        JSONObject json = new JSONObject();
+        json.put("msg","success");
+        return json.toJSONString();
+    }
 
 }

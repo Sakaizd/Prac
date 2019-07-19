@@ -60,8 +60,52 @@ public class ProductController {
     @ResponseBody
     public String addProducts(@RequestBody JSONObject jsonParam){
         Product product = JSON.parseObject(jsonParam.toJSONString(),Product.class);
-        productServiceImpl.save(product);
-        return "";
+        JSONObject json = new JSONObject();
+        if(productServiceImpl.existsByTypeIdAndBrandIdAndName(
+                product.getTypeId(),
+                product.getBrandId(),
+                product.getName())) {
+            json.put("msg","product already exist");
+            json.put("router","");
+        }else {
+            productServiceImpl.save(product);
+            json.put("msg","success");
+            json.put("router","");
+        }
+        return json.toJSONString();
+    }
+
+    @PostMapping(value = "/changeProducts", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String changeProducts(@RequestBody JSONObject jsonParam){
+        Product product = JSON.parseObject(jsonParam.toJSONString(),Product.class);
+        JSONObject json = new JSONObject();
+
+        Product tempProduct = productServiceImpl.
+                findByTypeIdAndBrandIdAndName(
+                        product.getTypeId(),
+                        product.getBrandId(),
+                        product.getName());
+        tempProduct.setBrandId(product.getBrandId());
+        tempProduct.setActive(product.isActive());
+        tempProduct.setUrl(product.getUrl());
+        tempProduct.setTypeId(product.getTypeId());
+        tempProduct.setStock(product.getStock());
+        tempProduct.setSold(product.getSold());
+        tempProduct.setPrice(product.getPrice());
+        tempProduct.setName(product.getName());
+        tempProduct.setDescription(product.getDescription());
+        if(productServiceImpl.existsByTypeIdAndBrandIdAndName(
+                tempProduct.getTypeId(),
+                tempProduct.getBrandId(),
+                tempProduct.getName())){
+            productServiceImpl.save(tempProduct);
+            json.put("msg","changeSuccess");
+        }
+        else {
+            json.put("msg","productAlreadyExist");
+        }
+        return  json.toJSONString();
     }
 
 

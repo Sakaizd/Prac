@@ -31,4 +31,17 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+    @Override
+    public boolean existsByTypeIdAndBrandIdAndName(Long typeId, Long brandId, String name) {
+        return productRepository.
+                existsByTypeIdAndBrandIdAndName(typeId,brandId,name);
+    }
+
+    @Override
+    public Product findByTypeIdAndBrandIdAndName(Long typeId, Long brandId, String name) {
+        Product product = productRepository.findByTypeIdAndBrandIdAndName(typeId,brandId,name);
+        return product;
+    }
+
+
 }
