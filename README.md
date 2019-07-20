@@ -1,3 +1,4 @@
 # JnuPrac   
-    登录界面：
-    username:user
+
+# 前端选手
+*https://github.com/angry-shark/JnuPric*
