@@ -26,9 +26,9 @@ public class MallController {
         //JSONObject json = new JSONObject();
         List<Product> productList = productServiceImpl.findAll();
         //jsonArray.add(productList);
-        int i=1;
         for(Product product : productList) {
-            System.out.println(i++);
+            System.out.println("brand id"+product.getBrandId());
+            System.out.println("type id "+product.getTypeId());
             JSONObject json = new JSONObject();
             json.put("brandName",productPropertiesServiceImpl.
                     findByBrandIdAndAndTypeId(product.getBrandId(),product.getTypeId()).getBrandName());
