@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 80016
  Source Host           : localhost:3306
- Source Schema         : test1
+ Source Schema         : test
 
  Target Server Type    : MySQL
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 20/07/2019 18:35:45
+ Date: 20/07/2019 19:39:43
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,21 @@ CREATE TABLE `cart`  (
   `uid` bigint(20) NULL DEFAULT NULL,
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for hibernate_sequence
+-- ----------------------------
+DROP TABLE IF EXISTS `hibernate_sequence`;
+CREATE TABLE `hibernate_sequence`  (
+  `next_val` bigint(20) NULL DEFAULT NULL
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Fixed;
+
+-- ----------------------------
+-- Records of hibernate_sequence
+-- ----------------------------
+INSERT INTO `hibernate_sequence` VALUES (1);
+INSERT INTO `hibernate_sequence` VALUES (1);
 
 -- ----------------------------
 -- Table structure for order_products
@@ -49,7 +63,21 @@ CREATE TABLE `order_products`  (
   `product_id` bigint(20) NULL DEFAULT NULL,
   `product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of order_products
+-- ----------------------------
+INSERT INTO `order_products` VALUES (57, 1, '联想威6 i5 8g', 1152542168435392512, 4999, 24, '联想威6 i5 8g');
+INSERT INTO `order_products` VALUES (56, 1, '一只手机', 1152496388785831936, 3500, 1, '华为p30');
+INSERT INTO `order_products` VALUES (55, 1, '电脑', 1152494947249684480, 5000, 4, '惠普暗影精灵');
+INSERT INTO `order_products` VALUES (54, 1, '电脑', 1152483229735845888, 5000, 4, '惠普暗影精灵');
+INSERT INTO `order_products` VALUES (53, 1, '一只手机', 1152482829305643008, 6000, 3, '小米mi9');
+INSERT INTO `order_products` VALUES (52, 1, '一只手机', 1152482645548990464, 6000, 3, '小米mi9');
+INSERT INTO `order_products` VALUES (51, 1, '电脑', 1152480231672512512, 5000, 4, '惠普暗影精灵');
+INSERT INTO `order_products` VALUES (50, 1, '一只手机', 1152479919620489216, 999, 7, '华为mate20');
+INSERT INTO `order_products` VALUES (49, 1, '一只手机', 1152479060320845824, 999, 7, '华为mate20');
+INSERT INTO `order_products` VALUES (48, 1, '一只手机', 1152476800962527232, 3500, 1, '华为p30');
 
 -- ----------------------------
 -- Table structure for orders
@@ -58,7 +86,6 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `order_id` bigint(20) NULL DEFAULT NULL,
   `pay_status` bit(1) NOT NULL,
@@ -66,8 +93,23 @@ CREATE TABLE `orders`  (
   `telephone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `total_price` double NULL DEFAULT NULL,
   `uid` bigint(20) NULL DEFAULT NULL,
+  `create_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of orders
+-- ----------------------------
+INSERT INTO `orders` VALUES (28, 'jnu', 'sbj', 1152494947249684480, b'1', b'0', '120', 5000, 1, '2019-07-20 16:26:22');
+INSERT INTO `orders` VALUES (26, 'jnu', 'lyj', 1152482829305643008, b'1', b'0', '119', 6000, 7, '2019-07-20 15:38:13');
+INSERT INTO `orders` VALUES (27, 'jnu', 'lyj', 1152483229735845888, b'1', b'0', '119', 5000, 7, '2019-07-20 15:39:49');
+INSERT INTO `orders` VALUES (25, 'jnu', 'lyj', 1152482645548990464, b'1', b'0', '119', 6000, 7, '2019-07-20 15:37:29');
+INSERT INTO `orders` VALUES (24, 'jnu', 'lyj', 1152480231672512512, b'1', b'1', '119', 5000, 7, '2019-07-20 15:27:54');
+INSERT INTO `orders` VALUES (23, 'jnu', 'sbj', 1152479919620489216, b'1', b'0', '120', 999, 1, '2019-07-20 15:26:40');
+INSERT INTO `orders` VALUES (22, 'jnu', 'sbj', 1152479060320845824, b'1', b'0', '120', 999, 1, '2019-07-20 15:23:15');
+INSERT INTO `orders` VALUES (21, 'jnu', 'sbj', 1152476800962527232, b'1', b'1', '120', 3500, 1, '2019-07-20 15:14:16');
+INSERT INTO `orders` VALUES (29, 'jnu', 'sbj', 1152496388785831936, b'1', b'0', '120', 3500, 1, '2019-07-20 16:32:06');
+INSERT INTO `orders` VALUES (30, 'jnu', 'wyc', 1152542168435392512, b'1', b'0', '110', 4999, 9, '2019-07-20 19:34:01');
 
 -- ----------------------------
 -- Table structure for product
@@ -85,7 +127,7 @@ CREATE TABLE `product`  (
   `type_id` bigint(20) NULL DEFAULT NULL,
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 199 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product
@@ -291,7 +333,7 @@ CREATE TABLE `product_properties`  (
   `type_id` bigint(20) NULL DEFAULT NULL,
   `type_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product_properties
@@ -322,6 +364,13 @@ CREATE TABLE `user`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES (1, '2019-07-20 19:37:27', 'c3079d243353e68687ea9b6794036998', b'1', 'admin', 'admin');
+INSERT INTO `user` VALUES (2, '2019-07-20 19:38:19', 'dc1c5ed2b8b12557f7d874db182d4862', b'1', 'wyc', 'user');
+INSERT INTO `user` VALUES (3, '2019-07-20 19:38:30', '6c84c231b65b68b0a5c58a3dacd2e10b', b'1', 'sbj', 'user');
+
+-- ----------------------------
 -- Table structure for user_info
 -- ----------------------------
 DROP TABLE IF EXISTS `user_info`;
@@ -335,7 +384,14 @@ CREATE TABLE `user_info`  (
   `psw_ques` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `telephone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `uid` bigint(20) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `uid`(`uid`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_info
+-- ----------------------------
+INSERT INTO `user_info` VALUES (1, 'jnu', 'i@qq.com', '404', 'wyc', 'wyc', 'who am i', '110', 2);
+INSERT INTO `user_info` VALUES (2, 'jnu', 'lyj@qq.com', '444', 'sbj', 'sbj', 'who am i', '119', 3);
 
 SET FOREIGN_KEY_CHECKS = 1;

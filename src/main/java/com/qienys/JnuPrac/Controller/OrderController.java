@@ -173,7 +173,7 @@ public class OrderController {
     @GetMapping(value = "/getAllOrders")
     public String getAllOrders(){
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        JSONObject jsonObject = new JSONObject();
+        JSONObject json = new JSONObject();
         if(SecurityUtils.getSubject().isAuthenticated()){
             User user = (User) SecurityUtils.getSubject().getPrincipal();
             System.out.println(user.getUserName());
@@ -183,10 +183,10 @@ public class OrderController {
             }
         }
         else {
-            jsonObject.put("msg","UnAuthorization");
-            jsonObject.put("router","404");
+            json.put("msg","UnAuthorization");
+            json.put("router","404");
         }
-        return jsonObject.toJSONString();
+        return json.toJSONString();
     }
 
     //模拟支付

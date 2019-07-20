@@ -154,7 +154,6 @@ public class UserController {
         JSONArray jsonArray = new JSONArray();
         userInfoServiceImpl.save(tempUserInfo);
         UserInfo userInfo = JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
-        result.put("method", "json");
         result.put("router", "QueryDataPage/:username");
         result.put("msg","ModifySuccess");
         result.put("username", loginUser.getUserName());
@@ -183,7 +182,7 @@ public class UserController {
         }
     }
 
-    //
+    //管理员获取用户信息
     @PostMapping(value = "/getUserInfoByAdmin", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String getUserInfoByAdmin(@RequestBody JSONObject jsonParam) {
@@ -195,7 +194,7 @@ public class UserController {
             User tempUser= JSON.parseObject(jsonParam.toJSONString(),User.class);
             User user = userServiceImpl.findByUserName(tempUser.getUserName());
             UserInfo tempUserInfo = userInfoServiceImpl.findByUid(user.getId());
-            JSONArray jsonArray = new JSONArray();
+            json.put("user",user);
             json.put("userInfo", tempUserInfo);
         }
         else {
@@ -206,11 +205,11 @@ public class UserController {
 
     }
 
+    ////管理员修改用户信息
     @PostMapping(value = "/ModifyUserInfoByAdmin", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String ModifyUserInfoByAdmin(@RequestBody JSONObject jsonParam) {
-        //Request userInfo
-        //User loginUser = userServiceImpl.findByUserName("user");//test
+        //Request userInfo(all)
         JSONObject json = new JSONObject();
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         if(loginUser.getUserType().equals("admin")){
