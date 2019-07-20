@@ -4,5 +4,7 @@
 *https://github.com/angry-shark/JnuPric*
 
 # 登陆账号：
-  管理员   用户名admin     密码admin  
-  普通用户 用户名wyc密码 wyc   用户名sbj 密码sbj 
+###########用户名#####密码
+  管理员#####admin 123  
+  普通用户#wyc密码 wyc   
+  #########sbj 密码sbj 
