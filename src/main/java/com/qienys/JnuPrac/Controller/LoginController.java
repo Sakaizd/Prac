@@ -29,11 +29,13 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
+            User loginUser = userServiceImpl.findByUserName(user.getUserName());
             result.put("router", "default");
             result.put("method", "json");
             result.put("msg","LoginSuccess");
-            result.put("username", user.getUserName());
-            result.put("userType", user.getUserType());
+            result.put("username", loginUser.getUserName());
+            result.put("userType", loginUser.getUserType());
+            System.out.println(loginUser.getUserType());
             System.out.println("loginsuccess");
         } catch (UnknownAccountException e) {
             result.put("method", "json");
@@ -113,7 +115,7 @@ public class LoginController {
 
 
     @GetMapping(value = {"/LoginPage","/RegisterPage","/QueryDataPage/user","/ModifyPage",
-    "/ModifyPassWord","/MyCart","/"})
+    "/ModifyPassWord","/MyCart","/product"})
     public String redirect(){
         return "redirect:/index";
     }
