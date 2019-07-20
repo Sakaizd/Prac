@@ -102,6 +102,7 @@ public class ProductController {
                             product.getBrandId(),
                             product.getName());
             tempProduct.setBrandId(product.getBrandId());
+            System.out.println(product.isActive());
             tempProduct.setActive(product.isActive());
             tempProduct.setUrl(product.getUrl());
             tempProduct.setTypeId(product.getTypeId());
@@ -110,19 +111,14 @@ public class ProductController {
             tempProduct.setPrice(product.getPrice());
             tempProduct.setName(product.getName());
             tempProduct.setDescription(product.getDescription());
-            if (productServiceImpl.existsByTypeIdAndBrandIdAndName(
-                    tempProduct.getTypeId(),
-                    tempProduct.getBrandId(),
-                    tempProduct.getName())) {
-
-                json.put("msg", "productAlreadyExist");
-            } else {
                 productServiceImpl.save(tempProduct);
                 json.put("msg", "changeSuccess");
+                json.put("router","");
             }
-        }
+
         else {
             json.put("msg","UnAuthentication")  ;
+            json.put("router","");
         }
         return  json.toJSONString();
     }

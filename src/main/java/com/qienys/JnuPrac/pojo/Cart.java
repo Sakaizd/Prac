@@ -25,15 +25,10 @@ public class Cart implements Serializable {
     private Long brandId;
     private Long typeId;
     private String description;//描述
-    private boolean active;//1:上架 0：下架
     private String url;//图片路径
 
 
-    protected Cart() {
-
-    }
-
-    public Cart(Long productId, Long uid, Long count, String productName, Double price, Long brandId, Long typeId, String description, boolean active, String url) {
+    public Cart(Long productId, Long uid, Long count, String productName, Double price, Long brandId, Long typeId, String description, String url) {
         this.productId = productId;
         this.uid = uid;
         this.count = count;
@@ -42,7 +37,6 @@ public class Cart implements Serializable {
         this.brandId = brandId;
         this.typeId = typeId;
         this.description = description;
-        this.active = active;
         this.url = url;
     }
 
@@ -116,14 +110,6 @@ public class Cart implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public String getUrl() {

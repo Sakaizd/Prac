@@ -177,6 +177,7 @@ public class UserController {
         }
         else {
             json.put("msg","UnAuthentication");
+            json.put("router","");
             return json.toJSONString();
 
         }
@@ -195,9 +196,11 @@ public class UserController {
             User user = userServiceImpl.findByUserName(tempUser.getUserName());
             UserInfo tempUserInfo = userInfoServiceImpl.findByUid(user.getId());
             json.put("userInfo", tempUserInfo);
+            json.put("router","");
         }
         else {
             json.put("msg","UnAuthentication");
+            json.put("router","");
         }
 
         return json.toJSONString();
@@ -215,9 +218,11 @@ public class UserController {
             UserInfo tempUserInfo= JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
             userInfoServiceImpl.save(tempUserInfo);
             json.put("msg","success");
+            json.put("router","");
             json.put("userInfo", tempUserInfo);
         }
         else {
+            json.put("router","");
             json.put("msg","UnAuthentication");
         }
 

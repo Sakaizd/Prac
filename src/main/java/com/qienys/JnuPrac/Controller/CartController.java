@@ -57,7 +57,6 @@ public class CartController {
             cart.setDescription(product.getDescription());
             cart.setUrl(product.getUrl());
             cart.setPrice(product.getPrice());
-            cart.setActive(product.isActive());
             cartServiceImpl.save(cart);
         }
         JSONObject jsonObject=new JSONObject();

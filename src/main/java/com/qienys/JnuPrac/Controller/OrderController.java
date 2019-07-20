@@ -184,9 +184,43 @@ public class OrderController {
         }
         else {
             json.put("msg","UnAuthorization");
-            json.put("router","404");
+            json.put("router","");
         }
         return json.toJSONString();
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/getOrderProductsByAdmin", produces = "application/json;charset=UTF-8")
+    public String getOrderProductsByAdmin(@RequestBody JSONObject jsonParam){
+        System.out.println(jsonParam);
+        //request orderId
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        Orders tempOrder= JSON.parseObject(jsonParam.toJSONString(),Orders.class);
+        Orders orders=ordersServiceImpl.findByOrderId(tempOrder.getOrderId());
+        JSONArray jsonArray = new JSONArray();
+        if(ordersServiceImpl.existsByOrderId(orders.getOrderId())&&
+                loginUser.getUserType().equals("admin")){
+            List<OrderProducts> orderProductsList= orderProductsServiceImpl.findAllByOrderId(orders.getOrderId());
+            for(OrderProducts orderProducts:orderProductsList){
+                JSONObject json = new JSONObject();
+                json.put("count",orderProducts.getCount());
+                json.put("description",orderProducts.getDescription());
+                json.put("orderId",orderProducts.getOrderId().toString());
+                json.put("price",orderProducts.getPrice());
+                json.put("productId",orderProducts.getProductId());
+                json.put("productName",orderProducts.getProductName());
+                json.put("payStatus",orders.isPayStatus());
+                json.put("postStatus",orders.isPostStatus());
+                jsonArray.add(json);
+            }
+            return JSON.toJSONString(jsonArray);
+        }
+        else{
+            JSONObject json = new JSONObject();
+            json.put("msg","UnAuthentication")  ;
+            json.put("router","");
+            return json.toJSONString();
+        }
     }
 
     //模拟支付
@@ -202,6 +236,7 @@ public class OrderController {
         ordersServiceImpl.save(tempOrder);
         JSONObject json = new JSONObject();
         json.put("msg","success");
+        json.put("router","");
         return json.toJSONString();
     }
 
@@ -223,9 +258,11 @@ public class OrderController {
             ordersServiceImpl.save(tempOrder);
 
             json.put("msg","success");
+            json.put("router","");
         }
         else {
             json.put("msg","UnAuthentication")  ;
+            json.put("router","");
         }
 
         return json.toJSONString();
