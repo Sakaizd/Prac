@@ -3,6 +3,7 @@ package com.qienys.JnuPrac.Controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.qienys.JnuPrac.pojo.Cart;
 import com.qienys.JnuPrac.pojo.OrderProducts;
 import com.qienys.JnuPrac.pojo.Orders;
@@ -14,6 +15,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.templateparser.markup.decoupled.DecoupledTemplateLogic;
 
 import java.util.Date;
 import java.util.List;
@@ -109,8 +111,24 @@ public class OrderController {
         //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         List<Orders> ordersList= ordersServiceImpl.findAllByUid(loginUser.getId());
         JSONArray jsonArray = new JSONArray();
-        jsonArray.add(ordersList);
-        return JSON.toJSONString(ordersList);
+        for(Orders orders:ordersList){
+            JSONObject json = new JSONObject();
+            json.put("address",orders.getAddress());
+            json.put("name",orders.getName());
+            json.put("orderId",orders.getOrderId());
+            json.put("payStatus",orders.isPayStatus());
+            json.put("postStatus",orders.isPostStatus());
+            json.put("telephone",orders.getTelephone());
+            json.put("totalPrice",orders.getTotalPrice());
+            //System.out.println(orders.getCreateTime());
+            String createTime= JSON.toJSONStringWithDateFormat
+                    (orders.getCreateTime(), "yyyy-MM-dd HH:mm:ss").
+                    replace("\"", "");
+            //System.out.println(JSON.toJSONStringWithDateFormat(orders.getCreateTime(), "yyyy-MM-dd HH:mm:ss:S"));
+            json.put("createTime",createTime);
+            jsonArray.add(json);
+        }
+        return JSON.toJSONString(jsonArray);
     }
 
     //根据订单号查商品
@@ -118,8 +136,8 @@ public class OrderController {
     @GetMapping(value = "/getOrderProducts", produces = "application/json;charset=UTF-8")
     public String getOrderProducts(@RequestBody JSONObject jsonParam){
         //request orderId
-        //User loginUser = userServiceImpl.findByUserName("user");//test
-        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        User loginUser = userServiceImpl.findByUserName("user");//test
+        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         Orders tempOrder= JSON.parseObject(jsonParam.toJSONString(),Orders.class);
         Orders orders=ordersServiceImpl.findByOrderId(tempOrder.getOrderId());
         if(ordersServiceImpl.existsByOrderId(orders.getOrderId())&&
@@ -156,10 +174,11 @@ public class OrderController {
         return jsonObject.toJSONString();
     }
 
+    //模拟支付
     @ResponseBody
     @PostMapping(value = "/setOrderPay", produces = "application/json;charset=UTF-8")
     public String setOrderPay(@RequestBody JSONObject JsonParam){
-        //request orderID
+        //request orderId
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         Orders orders = JSON.parseObject(JsonParam.toJSONString(),Orders.class);
         Orders tempOrder = ordersServiceImpl.findByOrderId(orders.getOrderId());
@@ -170,10 +189,11 @@ public class OrderController {
         return json.toJSONString();
     }
 
+    //后台设置支付订单
     @ResponseBody
     @PostMapping(value = "/setOrderPost", produces = "application/json;charset=UTF-8")
     public String setOrderPost(@RequestBody JSONObject JsonParam){
-        //request orderID
+        //request orderId
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         Orders orders = JSON.parseObject(JsonParam.toJSONString(),Orders.class);
         Orders tempOrder = ordersServiceImpl.findByOrderId(orders.getOrderId());

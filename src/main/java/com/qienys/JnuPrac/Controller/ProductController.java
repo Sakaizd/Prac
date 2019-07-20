@@ -3,7 +3,6 @@ package com.qienys.JnuPrac.Controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.qienys.JnuPrac.pojo.Product;
-import com.qienys.JnuPrac.service.ProductService;
 import com.qienys.JnuPrac.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,14 +19,14 @@ public class ProductController {
     @Autowired
     private ProductServiceImpl productServiceImpl;
 
-    private static String UPLOADED_FOLDER = "src/main/resources/upload/";
+    private static String UPLOADED_FOLDER = "D://Java//Prac//upload//";
 
-    @GetMapping("/upload")
+    @GetMapping("/static/upload")
     public String upload() {
         return "upload";
     }
 
-    @PostMapping("/upload") // //new annotation since 4.3
+    @PostMapping("/static/upload") // //new annotation since 4.3
     @ResponseBody
     public String singleFileUpload(@RequestParam("file") MultipartFile file) {
         JSONObject json = new JSONObject();
