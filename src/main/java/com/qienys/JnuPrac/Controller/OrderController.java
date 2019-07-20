@@ -154,6 +154,8 @@ public class OrderController {
                 json.put("price",orderProducts.getPrice());
                 json.put("productId",orderProducts.getProductId());
                 json.put("productName",orderProducts.getProductName());
+                json.put("payStatus",orders.isPayStatus());
+                json.put("postStatus",orders.isPostStatus());
                 jsonArray.add(json);
             }
             return JSON.toJSONString(jsonArray);
