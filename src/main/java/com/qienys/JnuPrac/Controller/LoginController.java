@@ -35,7 +35,7 @@ public class LoginController {
             result.put("msg","LoginSuccess");
             result.put("username", loginUser.getUserName());
             result.put("userType", loginUser.getUserType());
-            System.out.println(loginUser.getUserType());
+            System.out.println("user type"+loginUser.getUserType());
             System.out.println("loginsuccess");
         } catch (UnknownAccountException e) {
             result.put("method", "json");
