@@ -106,16 +106,17 @@ public class OrderController {
     //获取用户的所有订单
     @ResponseBody
     @GetMapping(value = "/getUserOrders")
-    public String getOrderList(){
-        User loginUser = userServiceImpl.findByUserName("user");//test
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+    public String getUserOrders(){
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        System.out.println(loginUser.getUserName());
         List<Orders> ordersList= ordersServiceImpl.findAllByUid(loginUser.getId());
         JSONArray jsonArray = new JSONArray();
         for(Orders orders:ordersList){
             JSONObject json = new JSONObject();
             json.put("address",orders.getAddress());
             json.put("name",orders.getName());
-            json.put("orderId",orders.getOrderId());
+            json.put("orderId",orders.getOrderId().toString());
             json.put("payStatus",orders.isPayStatus());
             json.put("postStatus",orders.isPostStatus());
             json.put("telephone",orders.getTelephone());
@@ -133,17 +134,29 @@ public class OrderController {
 
     //根据订单号查商品
     @ResponseBody
-    @GetMapping(value = "/getOrderProducts", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/getOrderProducts", produces = "application/json;charset=UTF-8")
     public String getOrderProducts(@RequestBody JSONObject jsonParam){
+        System.out.println(jsonParam);
         //request orderId
-        User loginUser = userServiceImpl.findByUserName("user");//test
-        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         Orders tempOrder= JSON.parseObject(jsonParam.toJSONString(),Orders.class);
         Orders orders=ordersServiceImpl.findByOrderId(tempOrder.getOrderId());
+        JSONArray jsonArray = new JSONArray();
         if(ordersServiceImpl.existsByOrderId(orders.getOrderId())&&
-        orders.getUid()==loginUser.getId()){
+        orders.getUid().equals(loginUser.getId())){
             List<OrderProducts> orderProductsList= orderProductsServiceImpl.findAllByOrderId(orders.getOrderId());
-            return JSON.toJSONString(orderProductsList);
+            for(OrderProducts orderProducts:orderProductsList){
+                JSONObject json = new JSONObject();
+                json.put("count",orderProducts.getCount());
+                json.put("description",orderProducts.getDescription());
+                json.put("orderId",orderProducts.getOrderId().toString());
+                json.put("price",orderProducts.getPrice());
+                json.put("productId",orderProducts.getProductId());
+                json.put("productName",orderProducts.getProductName());
+                jsonArray.add(json);
+            }
+            return JSON.toJSONString(jsonArray);
         }
         else{
             JSONObject json = new JSONObject();
@@ -179,6 +192,7 @@ public class OrderController {
     @PostMapping(value = "/setOrderPay", produces = "application/json;charset=UTF-8")
     public String setOrderPay(@RequestBody JSONObject JsonParam){
         //request orderId
+        System.out.println(JsonParam);
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         Orders orders = JSON.parseObject(JsonParam.toJSONString(),Orders.class);
         Orders tempOrder = ordersServiceImpl.findByOrderId(orders.getOrderId());

@@ -19,7 +19,7 @@ public class ProductController {
     @Autowired
     private ProductServiceImpl productServiceImpl;
 
-    private static String UPLOADED_FOLDER = "D://Java//Prac//upload//";
+    private static String UPLOADED_FOLDER = "src//resources//static//upload//";
 
     @GetMapping("/static/upload")
     public String upload() {
