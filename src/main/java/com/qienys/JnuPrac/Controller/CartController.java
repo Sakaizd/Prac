@@ -117,7 +117,7 @@ public class CartController {
 
 
 
-    @GetMapping("getTotalPrice")
+    @GetMapping("/getTotalPrice")
     @ResponseBody
     public String getTotalPrice(){
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();

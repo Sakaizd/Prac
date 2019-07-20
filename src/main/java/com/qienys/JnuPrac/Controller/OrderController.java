@@ -101,19 +101,16 @@ public class OrderController {
 
 
 
+    //获取用户的所有订单
     @ResponseBody
-    @GetMapping(value = "/getOrderList")
+    @GetMapping(value = "/getUserOrders")
     public String getOrderList(){
-        //User loginUser = userServiceImpl.findByUserName("user");//test
-        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        User loginUser = userServiceImpl.findByUserName("user");//test
+        //User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         List<Orders> ordersList= ordersServiceImpl.findAllByUid(loginUser.getId());
         JSONArray jsonArray = new JSONArray();
-        JSONObject json = new JSONObject();
-        json.put("router","");
-        jsonArray.add(json);
         jsonArray.add(ordersList);
-
-        return jsonArray.toJSONString();
+        return JSON.toJSONString(ordersList);
     }
 
     //根据订单号查商品

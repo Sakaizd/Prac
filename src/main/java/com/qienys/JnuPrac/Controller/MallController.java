@@ -46,7 +46,6 @@ public class MallController {
             json.put("url",product.getUrl());
             jsonArray.add(json);
         }
-        //System.out.println(jsonArray.toJSONString());
         return jsonArray.toJSONString();
     }
 
