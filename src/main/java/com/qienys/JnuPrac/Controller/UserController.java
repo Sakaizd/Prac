@@ -194,7 +194,6 @@ public class UserController {
             User tempUser= JSON.parseObject(jsonParam.toJSONString(),User.class);
             User user = userServiceImpl.findByUserName(tempUser.getUserName());
             UserInfo tempUserInfo = userInfoServiceImpl.findByUid(user.getId());
-            json.put("user",user);
             json.put("userInfo", tempUserInfo);
         }
         else {
