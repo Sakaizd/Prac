@@ -101,10 +101,17 @@ public class CartController {
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         //User loginUser = userServiceImpl.findByUserName("user");//test
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
-        cartServiceImpl.deleteByUidAndProductId(loginUser.getId(),cart.getProductId());
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("msg","DeleteSuccess");
-        jsonObject.put("router","MyCart");
+        if(jsonParam.isEmpty()){
+            jsonObject.put("msg","eeeeerrrrrrrrrrooooooooor!");
+            jsonObject.put("router","MyCart");
+        }
+        else {
+            cartServiceImpl.deleteByUidAndProductId(loginUser.getId(),cart.getProductId());
+            jsonObject.put("msg","DeleteSuccess");
+            jsonObject.put("router","MyCart");
+        }
+
         return jsonObject.toJSONString();
     }
 
