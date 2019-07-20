@@ -215,8 +215,6 @@ public class UserController {
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         if(loginUser.getUserType().equals("admin")){
             UserInfo tempUserInfo= JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
-            UserInfo userInfo = userInfoServiceImpl.findByUid(tempUserInfo.getUid());
-            System.out.println("name"+userInfo.getName());
             userInfoServiceImpl.save(tempUserInfo);
             json.put("msg","success");
             json.put("userInfo", tempUserInfo);
