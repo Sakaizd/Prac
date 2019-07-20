@@ -205,18 +205,29 @@ public class OrderController {
         return json.toJSONString();
     }
 
-    //后台设置支付订单
+
+
+    //admin api
+    //后台设置发货
     @ResponseBody
     @PostMapping(value = "/setOrderPost", produces = "application/json;charset=UTF-8")
     public String setOrderPost(@RequestBody JSONObject JsonParam){
         //request orderId
         User user = (User) SecurityUtils.getSubject().getPrincipal();
-        Orders orders = JSON.parseObject(JsonParam.toJSONString(),Orders.class);
-        Orders tempOrder = ordersServiceImpl.findByOrderId(orders.getOrderId());
-        tempOrder.setPostStatus(true);
-        ordersServiceImpl.save(tempOrder);
         JSONObject json = new JSONObject();
-        json.put("msg","success");
+        //只有管理员有权限
+        if(user.getUserType().equals("admin")){
+            Orders orders = JSON.parseObject(JsonParam.toJSONString(),Orders.class);
+            Orders tempOrder = ordersServiceImpl.findByOrderId(orders.getOrderId());
+            tempOrder.setPostStatus(true);
+            ordersServiceImpl.save(tempOrder);
+
+            json.put("msg","success");
+        }
+        else {
+            json.put("msg","UnAuthentication")  ;
+        }
+
         return json.toJSONString();
     }
 

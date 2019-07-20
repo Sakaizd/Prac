@@ -3,7 +3,9 @@ package com.qienys.JnuPrac.Controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.qienys.JnuPrac.pojo.Product;
+import com.qienys.JnuPrac.pojo.User;
 import com.qienys.JnuPrac.service.impl.ProductServiceImpl;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -55,22 +57,34 @@ public class ProductController {
         return "uploadStatus";
     }
 
+
+
+    //admin api
     @PostMapping(value = "/addProducts", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addProducts(@RequestBody JSONObject jsonParam){
         Product product = JSON.parseObject(jsonParam.toJSONString(),Product.class);
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
         JSONObject json = new JSONObject();
-        if(productServiceImpl.existsByTypeIdAndBrandIdAndName(
-                product.getTypeId(),
-                product.getBrandId(),
-                product.getName())) {
-            json.put("msg","product already exist");
-            json.put("router","");
-        }else {
-            productServiceImpl.save(product);
-            json.put("msg","success");
-            json.put("router","");
+        //只有管理员有权限
+        if(user.getUserType().equals("admin")){
+            if(productServiceImpl.existsByTypeIdAndBrandIdAndName(
+                    product.getTypeId(),
+                    product.getBrandId(),
+                    product.getName())) {
+                json.put("msg","product already exist");
+                json.put("router","");
+            }else {
+                productServiceImpl.save(product);
+                json.put("msg","success");
+                json.put("router","");
+            }
         }
+        else {
+            json.put("msg","UnAuthentication")  ;
+        }
+
+
         return json.toJSONString();
     }
 
@@ -79,30 +93,36 @@ public class ProductController {
     public String changeProducts(@RequestBody JSONObject jsonParam){
         Product product = JSON.parseObject(jsonParam.toJSONString(),Product.class);
         JSONObject json = new JSONObject();
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
 
-        Product tempProduct = productServiceImpl.
-                findByTypeIdAndBrandIdAndName(
-                        product.getTypeId(),
-                        product.getBrandId(),
-                        product.getName());
-        tempProduct.setBrandId(product.getBrandId());
-        tempProduct.setActive(product.isActive());
-        tempProduct.setUrl(product.getUrl());
-        tempProduct.setTypeId(product.getTypeId());
-        tempProduct.setStock(product.getStock());
-        tempProduct.setSold(product.getSold());
-        tempProduct.setPrice(product.getPrice());
-        tempProduct.setName(product.getName());
-        tempProduct.setDescription(product.getDescription());
-        if(productServiceImpl.existsByTypeIdAndBrandIdAndName(
-                tempProduct.getTypeId(),
-                tempProduct.getBrandId(),
-                tempProduct.getName())){
-            productServiceImpl.save(tempProduct);
-            json.put("msg","changeSuccess");
+        if(user.getUserType().equals("admin")) {
+            Product tempProduct = productServiceImpl.
+                    findByTypeIdAndBrandIdAndName(
+                            product.getTypeId(),
+                            product.getBrandId(),
+                            product.getName());
+            tempProduct.setBrandId(product.getBrandId());
+            tempProduct.setActive(product.isActive());
+            tempProduct.setUrl(product.getUrl());
+            tempProduct.setTypeId(product.getTypeId());
+            tempProduct.setStock(product.getStock());
+            tempProduct.setSold(product.getSold());
+            tempProduct.setPrice(product.getPrice());
+            tempProduct.setName(product.getName());
+            tempProduct.setDescription(product.getDescription());
+            if (productServiceImpl.existsByTypeIdAndBrandIdAndName(
+                    tempProduct.getTypeId(),
+                    tempProduct.getBrandId(),
+                    tempProduct.getName())) {
+
+                json.put("msg", "productAlreadyExist");
+            } else {
+                productServiceImpl.save(tempProduct);
+                json.put("msg", "changeSuccess");
+            }
         }
         else {
-            json.put("msg","productAlreadyExist");
+            json.put("msg","UnAuthentication")  ;
         }
         return  json.toJSONString();
     }

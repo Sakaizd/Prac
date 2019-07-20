@@ -147,7 +147,6 @@ public class UserController {
     @PostMapping(value = "/userInfoModify", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String userInfoModify(@RequestBody JSONObject jsonParam) {
-        System.out.println(jsonParam.toJSONString());
         //User loginUser = userServiceImpl.findByUserName("user");//test
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         UserInfo tempUserInfo = JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
@@ -171,13 +170,74 @@ public class UserController {
     @ResponseBody
     @GetMapping("getAllUsers")
     public String getAllUsers(){
-        JSONArray jsonArray = new JSONArray();
         JSONObject json = new JSONObject();
-        List<User> userList = userServiceImpl.findAll();
-        jsonArray.add(json.toJSONString());
-        jsonArray.add(userList);
-        return jsonArray.toJSONString();
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        if(loginUser.getUserType().equals("admin")) {
+            List<User> userList = userServiceImpl.findAll();
+            return JSON.toJSONString(userList);
+        }
+        else {
+            json.put("msg","UnAuthentication");
+            return json.toJSONString();
+
+        }
     }
+
+    //
+    @PostMapping(value = "/getUserInfoByAdmin", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String getUserInfoByAdmin(@RequestBody JSONObject jsonParam) {
+        //Request userName
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        JSONObject json = new JSONObject();
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        if(loginUser.getUserType().equals("admin")){
+            User tempUser= JSON.parseObject(jsonParam.toJSONString(),User.class);
+            User user = userServiceImpl.findByUserName(tempUser.getUserName());
+            UserInfo tempUserInfo = userInfoServiceImpl.findByUid(user.getId());
+            JSONArray jsonArray = new JSONArray();
+            json.put("userInfo", tempUserInfo);
+        }
+        else {
+            json.put("msg","UnAuthentication");
+        }
+
+        return json.toJSONString();
+
+    }
+
+    @PostMapping(value = "/ModifyUserInfoByAdmin", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String ModifyUserInfoByAdmin(@RequestBody JSONObject jsonParam) {
+        //Request userInfo
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        JSONObject json = new JSONObject();
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        if(loginUser.getUserType().equals("admin")){
+            UserInfo tempUserInfo= JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
+            UserInfo userInfo = userInfoServiceImpl.findByUid(tempUserInfo.getUid());
+            System.out.println("name"+userInfo.getName());
+            userInfoServiceImpl.save(tempUserInfo);
+            json.put("msg","success");
+            json.put("userInfo", tempUserInfo);
+        }
+        else {
+            json.put("msg","UnAuthentication");
+        }
+
+        return json.toJSONString();
+
+    }
+
+
+
+
+
+
+
+
+
+
 
     //测试用
     @RequestMapping("/jsontest")
