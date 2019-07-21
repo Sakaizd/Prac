@@ -147,26 +147,23 @@ public class UserController {
     @PostMapping(value = "/userInfoModify", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String userInfoModify(@RequestBody JSONObject jsonParam) {
+        System.out.println(jsonParam.toJSONString());
         //User loginUser = userServiceImpl.findByUserName("user");//test
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         UserInfo tempUserInfo = JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
         JSONObject result = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
         userInfoServiceImpl.save(tempUserInfo);
-        UserInfo userInfo = JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
         result.put("router", "QueryDataPage/:username");
         result.put("msg","ModifySuccess");
         result.put("username", loginUser.getUserName());
         result.put("userType", loginUser.getUserType());
-        jsonArray.add(result);
-        jsonArray.add(userInfo);
-        return jsonArray.toJSONString();
+        return result.toJSONString();
 
     }
 
 
     //管理员用
-/*    @ResponseBody
+    @ResponseBody
     @GetMapping("/getAllUsers")
     public String getAllUsers(){
         JSONObject json = new JSONObject();
@@ -181,7 +178,7 @@ public class UserController {
             return json.toJSONString();
 
         }
-    }*/
+    }
 
     @ResponseBody
     @GetMapping("/getAllUserInfosByAdmin")
@@ -264,6 +261,7 @@ public class UserController {
     @ResponseBody
     public String resetPassword(@RequestBody JSONObject jsonParam) {
         //Request username
+        System.out.println(jsonParam.toJSONString());
         JSONObject json = new JSONObject();
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         if(loginUser.getUserType().equals("admin")){
