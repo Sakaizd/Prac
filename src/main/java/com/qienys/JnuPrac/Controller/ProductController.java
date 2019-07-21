@@ -43,18 +43,13 @@ public class ProductController {
             Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
             Files.write(path, bytes);
             json.put("msg","uploadSuccess");
-            json.put("file name",file.getOriginalFilename().toString());
+            json.put("url",file.getOriginalFilename().toString());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return json.toJSONString();
-    }
-
-    @GetMapping("/uploadStatus")
-    public String uploadStatus() {
-        return "uploadStatus";
     }
 
 
@@ -91,18 +86,19 @@ public class ProductController {
     @PostMapping(value = "/changeProducts", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String changeProducts(@RequestBody JSONObject jsonParam){
+        System.out.println(jsonParam.toJSONString());
         Product product = JSON.parseObject(jsonParam.toJSONString(),Product.class);
         JSONObject json = new JSONObject();
         User user = (User) SecurityUtils.getSubject().getPrincipal();
 
         if(user.getUserType().equals("admin")) {
-            Product tempProduct = productServiceImpl.
+            /*Product tempProduct = productServiceImpl.
                     findByTypeIdAndBrandIdAndName(
                             product.getTypeId(),
                             product.getBrandId(),
-                            product.getName());
+                            product.getName());*/
+            Product tempProduct = productServiceImpl.findById(product.getId());
             tempProduct.setBrandId(product.getBrandId());
-            System.out.println(product.isActive());
             tempProduct.setActive(product.isActive());
             tempProduct.setUrl(product.getUrl());
             tempProduct.setTypeId(product.getTypeId());

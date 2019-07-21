@@ -260,6 +260,28 @@ public class UserController {
 
     }
 
+    @PostMapping(value = "/resetPassword", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String resetPassword(@RequestBody JSONObject jsonParam) {
+        //Request username
+        JSONObject json = new JSONObject();
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        if(loginUser.getUserType().equals("admin")){
+            User tempUser= JSON.parseObject(jsonParam.toJSONString(),User.class);
+            User user = userServiceImpl.findByUserName(tempUser.getUserName());
+            user.setPassword(MD5Utils.encrypt(user.getUserName(),"123"));
+            userServiceImpl.save(user);
+            json.put("msg","success");
+        }
+        else {
+            json.put("router","");
+            json.put("msg","UnAuthentication");
+        }
+
+        return json.toJSONString();
+
+    }
+
 
 
 

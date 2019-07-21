@@ -110,7 +110,7 @@ public class LoginController {
 
 
     @GetMapping(value = {"/LoginPage","/RegisterPage","/QueryDataPage/user","/ModifyPage",
-    "/ModifyPassWord","/MyCart","/product","/MyOrders"})
+    "/ModifyPassWord","/MyCart","/product","/MyOrders","/admin",""})
     public String redirect(){
         return "redirect:/index";
     }
