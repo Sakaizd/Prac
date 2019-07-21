@@ -171,20 +171,37 @@ public class OrderController {
     @GetMapping(value = "/getAllOrders")
     public String getAllOrders(){
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        JSONObject json = new JSONObject();
-        if(SecurityUtils.getSubject().isAuthenticated()){
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
-            System.out.println(user.getUserName());
-            if(loginUser.getUserType().equals("admin")) {
-                List<Orders> ordersList = ordersServiceImpl.findAll();
-                return JSON.toJSONString(ordersList);
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        System.out.println(user.getUserName());
+        if(SecurityUtils.getSubject().isAuthenticated()&&loginUser.getUserType().equals("admin")){
+            List<Orders> ordersList = ordersServiceImpl.findAll();
+            JSONArray jsonArray = new JSONArray();
+            for(Orders orders:ordersList){
+                JSONObject json = new JSONObject();
+                json.put("address",orders.getAddress());
+                json.put("name",orders.getName());
+                json.put("orderId",orders.getOrderId().toString());
+                json.put("payStatus",orders.isPayStatus());
+                json.put("postStatus",orders.isPostStatus());
+                json.put("telephone",orders.getTelephone());
+                json.put("totalPrice",orders.getTotalPrice());
+                //System.out.println(orders.getCreateTime());
+                String createTime= JSON.toJSONStringWithDateFormat
+                        (orders.getCreateTime(), "yyyy-MM-dd HH:mm:ss").
+                        replace("\"", "");
+                //System.out.println(JSON.toJSONStringWithDateFormat(orders.getCreateTime(), "yyyy-MM-dd HH:mm:ss:S"));
+                json.put("createTime",createTime);
+                jsonArray.add(json);
             }
-        }
+                return jsonArray.toJSONString();
+            }
         else {
+            JSONObject json = new JSONObject();
             json.put("msg","UnAuthorization");
             json.put("router","");
+            return json.toJSONString();
         }
-        return json.toJSONString();
+
     }
 
     @ResponseBody
