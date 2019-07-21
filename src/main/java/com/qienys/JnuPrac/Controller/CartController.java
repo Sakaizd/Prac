@@ -69,21 +69,16 @@ public class CartController {
     @GetMapping(value = "/getCartList")
     @ResponseBody
     public String getCartList(){
-        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
-        //User loginUser = userServiceImpl.findByUserName("user");
-        System.out.println("uid"+loginUser.getId());
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         List<Cart> cartList = cartServiceImpl.findAllByUid(loginUser.getId());
         JSON.toJSONString(cartList);
-        //jsonArray.add(cartList);
         return JSON.toJSONString(cartList);
     }
 
     @PostMapping(value = "/changeCart", produces = "application/json;charset = UTF-8")
     @ResponseBody
     public String changeCart(@RequestBody JSONObject jsonParam){
-        //System.out.println(jsonParam.toJSONString());
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
-        //User loginUser = userServiceImpl.findByUserName("user");
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
         Cart tempCart = cartServiceImpl.findByUidAndAndProductId(loginUser.getId(),cart.getProductId());
         tempCart.setCount(tempCart.getCount()+cart.getCount());
@@ -97,9 +92,7 @@ public class CartController {
     @PostMapping(value = "/deleteFromCart", produces = "application/json;charset = UTF-8")
     @ResponseBody
     public String deleteFromCart(@RequestBody JSONObject jsonParam){
-        //take productId
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        //User loginUser = userServiceImpl.findByUserName("user");//test
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
         JSONObject jsonObject = new JSONObject();
         if(jsonParam.isEmpty()){
