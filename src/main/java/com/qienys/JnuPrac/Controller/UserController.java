@@ -165,7 +165,7 @@ public class UserController {
     }
 
 
- /*   //管理员用
+    //管理员用
     @ResponseBody
     @GetMapping("getAllUsers")
     public String getAllUsers(){
@@ -181,7 +181,7 @@ public class UserController {
             return json.toJSONString();
 
         }
-    }*/
+    }
 
     @ResponseBody
     @GetMapping("/getAllUserInfosByAdmin")
