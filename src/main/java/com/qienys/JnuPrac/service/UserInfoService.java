@@ -8,4 +8,5 @@ public interface UserInfoService {
     UserInfo findByUid(Long uid);
     void save(UserInfo userInfo);
     List<UserInfo> findAll();
+    boolean existsByUid(Long uid);
 }

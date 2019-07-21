@@ -152,11 +152,31 @@ public class UserController {
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         UserInfo tempUserInfo = JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
         JSONObject result = new JSONObject();
-        userInfoServiceImpl.save(tempUserInfo);
-        result.put("router", "QueryDataPage/:username");
-        result.put("msg","ModifySuccess");
-        result.put("username", loginUser.getUserName());
-        result.put("userType", loginUser.getUserType());
+        if(userInfoServiceImpl.existsByUid(loginUser.getId())){
+            tempUserInfo.setId(loginUser.getId());
+            UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
+            userInfo.setAddress(tempUserInfo.getAddress());
+            userInfo.setTelephone(tempUserInfo.getTelephone());
+            userInfo.setIdcard(tempUserInfo.getIdcard());
+            userInfo.setEmail(tempUserInfo.getEmail());
+            userInfoServiceImpl.save(userInfo);
+            result.put("router", "QueryDataPage/:username");
+            result.put("msg","ModifySuccess");
+            result.put("username", loginUser.getUserName());
+            result.put("userType", loginUser.getUserType());
+        }
+        else {
+            tempUserInfo.setUid(loginUser.getId());
+            userInfoServiceImpl.save(tempUserInfo);
+            result.put("router", "QueryDataPage/:username");
+            result.put("msg","ModifySuccess");
+            result.put("username", loginUser.getUserName());
+            result.put("userType", loginUser.getUserType());
+        }
+
+
+
+
         return result.toJSONString();
 
     }

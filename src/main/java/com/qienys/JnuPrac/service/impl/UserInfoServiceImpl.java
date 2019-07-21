@@ -31,5 +31,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         return  (List<UserInfo>) list;
     }
 
+    @Override
+    public boolean existsByUid(Long uid) {
+        return userInfoRepository.existsByUid(uid);
+    }
+
 
 }
