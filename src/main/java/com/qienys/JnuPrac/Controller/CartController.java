@@ -35,6 +35,7 @@ public class CartController {
     @PostMapping(value = "/addToCart", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addToCart(@RequestBody JSONObject jsonParam) {
+        System.out.println(jsonParam.toJSONString());
         //request productId  count
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
@@ -65,12 +66,12 @@ public class CartController {
     }
 
 
-    @RequestMapping(value = "/getCartList", method = RequestMethod.GET, produces = "application/json;charset = UTF-8")
+    @GetMapping(value = "/getCartList")
     @ResponseBody
     public String getCartList(){
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
         //User loginUser = userServiceImpl.findByUserName("user");
-
+        System.out.println("uid"+loginUser.getId());
         List<Cart> cartList = cartServiceImpl.findAllByUid(loginUser.getId());
         JSON.toJSONString(cartList);
         //jsonArray.add(cartList);

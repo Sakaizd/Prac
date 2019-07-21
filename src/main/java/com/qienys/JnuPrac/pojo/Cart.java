@@ -28,6 +28,10 @@ public class Cart implements Serializable {
     private String url;//图片路径
 
 
+    protected Cart(){
+
+    }
+
     public Cart(Long productId, Long uid, Long count, String productName, Double price, Long brandId, Long typeId, String description, String url) {
         this.productId = productId;
         this.uid = uid;
