@@ -44,8 +44,7 @@ public class MallController {
                 json.put("sold",product.getSold());
                 json.put("stock",product.getStock());
                 json.put("active",product.isActive());
-                json.put("url",product.getUrl());
-                System.out.println("upload/"+product.getUrl());
+                json.put("url","upload/"+product.getUrl());
                 jsonArray.add(json);
             }
 

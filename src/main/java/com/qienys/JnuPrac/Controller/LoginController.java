@@ -31,26 +31,21 @@ public class LoginController {
             subject.login(token);
             User loginUser = userServiceImpl.findByUserName(user.getUserName());
             result.put("router", "default");
-            result.put("method", "json");
             result.put("msg","LoginSuccess");
             result.put("username", loginUser.getUserName());
             result.put("userType", loginUser.getUserType());
             System.out.println("user type"+loginUser.getUserType());
             System.out.println("loginsuccess");
         } catch (UnknownAccountException e) {
-            result.put("method", "json");
             result.put("router","LoginPage");
             result.put("msg","UnknownAccount");
         } catch (IncorrectCredentialsException e) {
-            result.put("method", "json");
             result.put("router","LoginPage");
             result.put("msg","IncorrectCredentials");
         } catch (LockedAccountException e) {
-            result.put("method", "json");
             result.put("router","LoginPage");
             result.put("msg","LockedAccount");
         } catch (AuthenticationException e) {
-            result.put("method", "json");
             result.put("router","LoginPage");
             result.put("msg","UnAuthentication");
         }
