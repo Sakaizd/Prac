@@ -7,6 +7,8 @@ import com.qienys.JnuPrac.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
@@ -21,6 +23,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public void save(UserInfo userInfo) {
         userInfoRepository.save(userInfo);
+    }
+
+    @Override
+    public List<UserInfo> findAll() {
+        Iterable<UserInfo> list = userInfoRepository.findAll();
+        return  (List<UserInfo>) list;
     }
 
 

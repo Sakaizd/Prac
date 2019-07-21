@@ -165,7 +165,7 @@ public class UserController {
     }
 
 
-    //管理员用
+ /*   //管理员用
     @ResponseBody
     @GetMapping("getAllUsers")
     public String getAllUsers(){
@@ -181,9 +181,26 @@ public class UserController {
             return json.toJSONString();
 
         }
+    }*/
+
+    @ResponseBody
+    @GetMapping("/getAllUserInfosByAdmin")
+    public String getAllUserInfosByAdmin(){
+        JSONObject json = new JSONObject();
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        if(loginUser.getUserType().equals("admin")) {
+            List<UserInfo> userInfosList = userInfoServiceImpl.findAll();
+            return JSON.toJSONString(userInfosList);
+        }
+        else {
+            json.put("msg","UnAuthentication");
+            json.put("router","");
+            return json.toJSONString();
+
+        }
     }
 
-    //管理员获取用户信息
+/*    //管理员获取用户信息
     @PostMapping(value = "/getUserInfoByAdmin", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String getUserInfoByAdmin(@RequestBody JSONObject jsonParam) {
@@ -205,7 +222,7 @@ public class UserController {
 
         return json.toJSONString();
 
-    }
+    }*/
 
     ////管理员修改用户信息
     @PostMapping(value = "/ModifyUserInfoByAdmin", produces = "application/json;charset=UTF-8")
