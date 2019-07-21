@@ -186,17 +186,30 @@ public class UserController {
     @ResponseBody
     @GetMapping("/getAllUserInfosByAdmin")
     public String getAllUserInfosByAdmin(){
-        JSONObject json = new JSONObject();
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         if(loginUser.getUserType().equals("admin")) {
+            JSONArray jsonArray = new JSONArray();
             List<UserInfo> userInfosList = userInfoServiceImpl.findAll();
-            return JSON.toJSONString(userInfosList);
+            for(UserInfo userInfo : userInfosList){
+                JSONObject json = new JSONObject();
+                json.put("address",userInfo.getAddress());
+                json.put("email",userInfo.getEmail());
+                json.put("idCard",userInfo.getIdcard());
+                json.put("name",userInfo.getName());
+                json.put("pswAns",userInfo.getPswAns());
+                json.put("pswQues",userInfo.getPswQues());
+                json.put("telephone",userInfo.getTelephone());
+                json.put("uid",userInfo.getUid());
+                json.put("username",userServiceImpl.findById(userInfo.getUid()).getUserName());
+                jsonArray.add(json);
+            }
+            return jsonArray.toJSONString();
         }
         else {
+            JSONObject json = new JSONObject();
             json.put("msg","UnAuthentication");
             json.put("router","");
             return json.toJSONString();
-
         }
     }
 
