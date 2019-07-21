@@ -175,8 +175,6 @@ public class UserController {
         }
 
 
-
-
         return result.toJSONString();
 
     }
@@ -206,7 +204,7 @@ public class UserController {
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         if(loginUser.getUserType().equals("admin")) {
             JSONArray jsonArray = new JSONArray();
-            List<UserInfo> userInfosList = userInfoServiceImpl.findAll();
+            /*List<UserInfo> userInfosList = userInfoServiceImpl.findAll();
             for(UserInfo userInfo : userInfosList){
                 JSONObject json = new JSONObject();
                 json.put("address",userInfo.getAddress());
@@ -219,6 +217,23 @@ public class UserController {
                 json.put("uid",userInfo.getUid());
                 json.put("username",userServiceImpl.findById(userInfo.getUid()).getUserName());
                 jsonArray.add(json);
+            }*/
+            List <User> userList = userServiceImpl.findAll();
+            for(User user : userList){
+                JSONObject json = new JSONObject();
+                if(userInfoServiceImpl.existsByUid(user.getId())){
+                    UserInfo userInfo = userInfoServiceImpl.findByUid(user.getId());
+                    json.put("address",userInfo.getAddress());
+                    json.put("email",userInfo.getEmail());
+                    json.put("idCard",userInfo.getIdcard());
+                    json.put("name",userInfo.getName());
+                    json.put("pswAns",userInfo.getPswAns());
+                    json.put("pswQues",userInfo.getPswQues());
+                    json.put("telephone",userInfo.getTelephone());
+                    json.put("uid",user.getId());
+                    json.put("username",user.getUserName());
+                    jsonArray.add(json);
+                }
             }
             return jsonArray.toJSONString();
         }
