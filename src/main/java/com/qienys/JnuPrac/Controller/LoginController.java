@@ -79,7 +79,7 @@ public class LoginController {
 
     @RequestMapping("/index")
     public String index() {
-        System.out.println("/index");
+        //System.out.println("/index");
         if(SecurityUtils.getSubject().isAuthenticated()){
             User user = (User) SecurityUtils.getSubject().getPrincipal();
             System.out.println(user.getUserName());

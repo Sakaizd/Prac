@@ -35,7 +35,7 @@ public class CartController {
     @PostMapping(value = "/addToCart", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addToCart(@RequestBody JSONObject jsonParam) {
-        System.out.println(jsonParam.toJSONString());
+        //System.out.println(jsonParam.toJSONString());
         //request productId  count
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
