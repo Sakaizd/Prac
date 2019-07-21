@@ -167,7 +167,7 @@ public class UserController {
 
     //管理员用
     @ResponseBody
-    @GetMapping("getAllUsers")
+    @GetMapping("/getAllUsers")
     public String getAllUsers(){
         JSONObject json = new JSONObject();
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
