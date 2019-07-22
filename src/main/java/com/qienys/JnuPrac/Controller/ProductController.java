@@ -8,12 +8,16 @@ import com.qienys.JnuPrac.service.impl.ProductServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 
 @Controller
@@ -53,6 +57,12 @@ public class ProductController {
     }
 
 
+/*
+    @GetMapping ("/addProducts")
+    public String addProducts(){
+        return "addProducts";
+    }
+*/
 
     //admin api
     @PostMapping(value = "/addProducts", produces = "application/json;charset=UTF-8")
@@ -82,6 +92,31 @@ public class ProductController {
 
         return json.toJSONString();
     }
+
+    /*@PostMapping("/addProducts.action")
+    @ResponseBody
+    public String addProducts(Product product){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        JSONObject json = new JSONObject();
+        //只有管理员有权限
+        if(user.getUserType().equals("admin")){
+            if(productServiceImpl.existsByTypeIdAndBrandIdAndName(
+                    product.getTypeId(),
+                    product.getBrandId(),
+                    product.getName())) {
+                json.put("msg","product already exist");
+                json.put("router","");
+            }else {
+                productServiceImpl.save(product);
+                json.put("msg","success");
+                json.put("router","");
+            }
+        }
+        else {
+            json.put("msg","UnAuthentication")  ;
+        }
+        return json.toJSONString();
+    }*/
 
     @PostMapping(value = "/changeProducts", produces = "application/json;charset=UTF-8")
     @ResponseBody
