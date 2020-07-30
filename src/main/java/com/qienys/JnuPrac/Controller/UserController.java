@@ -152,32 +152,178 @@ public class UserController {
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         UserInfo tempUserInfo = JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
         JSONObject result = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        userInfoServiceImpl.save(tempUserInfo);
-        UserInfo userInfo = JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
-        result.put("method", "json");
-        result.put("router", "QueryDataPage/:username");
-        result.put("msg","ModifySuccess");
-        result.put("username", loginUser.getUserName());
-        result.put("userType", loginUser.getUserType());
-        jsonArray.add(result);
-        jsonArray.add(userInfo);
-        return jsonArray.toJSONString();
+        if(userInfoServiceImpl.existsByUid(loginUser.getId())){
+            tempUserInfo.setId(loginUser.getId());
+            UserInfo userInfo = userInfoServiceImpl.findByUid(loginUser.getId());
+            userInfo.setAddress(tempUserInfo.getAddress());
+            userInfo.setTelephone(tempUserInfo.getTelephone());
+            userInfo.setIdcard(tempUserInfo.getIdcard());
+            userInfo.setEmail(tempUserInfo.getEmail());
+            userInfoServiceImpl.save(userInfo);
+            result.put("router", "QueryDataPage/:username");
+            result.put("msg","ModifySuccess");
+            result.put("username", loginUser.getUserName());
+            result.put("userType", loginUser.getUserType());
+        }
+        else {
+            tempUserInfo.setUid(loginUser.getId());
+            userInfoServiceImpl.save(tempUserInfo);
+            result.put("router", "QueryDataPage/:username");
+            result.put("msg","ModifySuccess");
+            result.put("username", loginUser.getUserName());
+            result.put("userType", loginUser.getUserType());
+        }
+
+
+        return result.toJSONString();
 
     }
 
 
     //管理员用
     @ResponseBody
-    @GetMapping("getAllUsers")
+    @GetMapping("/getAllUsers")
     public String getAllUsers(){
-        JSONArray jsonArray = new JSONArray();
         JSONObject json = new JSONObject();
-        List<User> userList = userServiceImpl.findAll();
-        jsonArray.add(json.toJSONString());
-        jsonArray.add(userList);
-        return jsonArray.toJSONString();
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        if(loginUser.getUserType().equals("admin")) {
+            List<User> userList = userServiceImpl.findAll();
+            return JSON.toJSONString(userList);
+        }
+        else {
+            json.put("msg","UnAuthentication");
+            json.put("router","");
+            return json.toJSONString();
+
+        }
     }
+
+    @ResponseBody
+    @GetMapping("/getAllUserInfosByAdmin")
+    public String getAllUserInfosByAdmin(){
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        if(loginUser.getUserType().equals("admin")) {
+            JSONArray jsonArray = new JSONArray();
+            /*List<UserInfo> userInfosList = userInfoServiceImpl.findAll();
+            for(UserInfo userInfo : userInfosList){
+                JSONObject json = new JSONObject();
+                json.put("address",userInfo.getAddress());
+                json.put("email",userInfo.getEmail());
+                json.put("idCard",userInfo.getIdcard());
+                json.put("name",userInfo.getName());
+                json.put("pswAns",userInfo.getPswAns());
+                json.put("pswQues",userInfo.getPswQues());
+                json.put("telephone",userInfo.getTelephone());
+                json.put("uid",userInfo.getUid());
+                json.put("username",userServiceImpl.findById(userInfo.getUid()).getUserName());
+                jsonArray.add(json);
+            }*/
+            List <User> userList = userServiceImpl.findAll();
+            for(User user : userList){
+                JSONObject json = new JSONObject();
+                if(userInfoServiceImpl.existsByUid(user.getId())){
+                    UserInfo userInfo = userInfoServiceImpl.findByUid(user.getId());
+                    json.put("address",userInfo.getAddress());
+                    json.put("email",userInfo.getEmail());
+                    json.put("idCard",userInfo.getIdcard());
+                    json.put("name",userInfo.getName());
+                    json.put("pswAns",userInfo.getPswAns());
+                    json.put("pswQues",userInfo.getPswQues());
+                    json.put("telephone",userInfo.getTelephone());
+                    json.put("uid",user.getId());
+                    json.put("username",user.getUserName());
+                    jsonArray.add(json);
+                }
+            }
+            return jsonArray.toJSONString();
+        }
+        else {
+            JSONObject json = new JSONObject();
+            json.put("msg","UnAuthentication");
+            json.put("router","");
+            return json.toJSONString();
+        }
+    }
+
+/*    //管理员获取用户信息
+    @PostMapping(value = "/getUserInfoByAdmin", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String getUserInfoByAdmin(@RequestBody JSONObject jsonParam) {
+        //Request userName
+        //User loginUser = userServiceImpl.findByUserName("user");//test
+        JSONObject json = new JSONObject();
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        if(loginUser.getUserType().equals("admin")){
+            User tempUser= JSON.parseObject(jsonParam.toJSONString(),User.class);
+            User user = userServiceImpl.findByUserName(tempUser.getUserName());
+            UserInfo tempUserInfo = userInfoServiceImpl.findByUid(user.getId());
+            json.put("userInfo", tempUserInfo);
+            json.put("router","");
+        }
+        else {
+            json.put("msg","UnAuthentication");
+            json.put("router","");
+        }
+
+        return json.toJSONString();
+
+    }*/
+
+    ////管理员修改用户信息
+    @PostMapping(value = "/ModifyUserInfoByAdmin", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String ModifyUserInfoByAdmin(@RequestBody JSONObject jsonParam) {
+        //Request userInfo(all)
+        JSONObject json = new JSONObject();
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        if(loginUser.getUserType().equals("admin")){
+            UserInfo tempUserInfo= JSON.parseObject(jsonParam.toJSONString(),UserInfo.class);
+            userInfoServiceImpl.save(tempUserInfo);
+            json.put("msg","success");
+            json.put("router","");
+            json.put("userInfo", tempUserInfo);
+        }
+        else {
+            json.put("router","");
+            json.put("msg","UnAuthentication");
+        }
+
+        return json.toJSONString();
+
+    }
+
+    @PostMapping(value = "/resetPassword", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String resetPassword(@RequestBody JSONObject jsonParam) {
+        //Request username
+        System.out.println(jsonParam.toJSONString());
+        JSONObject json = new JSONObject();
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
+        if(loginUser.getUserType().equals("admin")){
+            User tempUser= JSON.parseObject(jsonParam.toJSONString(),User.class);
+            User user = userServiceImpl.findByUserName(tempUser.getUserName());
+            user.setPassword(MD5Utils.encrypt(user.getUserName(),"123"));
+            userServiceImpl.save(user);
+            json.put("msg","success");
+        }
+        else {
+            json.put("router","");
+            json.put("msg","UnAuthentication");
+        }
+
+        return json.toJSONString();
+
+    }
+
+
+
+
+
+
+
+
+
+
 
     //测试用
     @RequestMapping("/jsontest")

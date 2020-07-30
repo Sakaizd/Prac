@@ -29,17 +29,7 @@ public class Product implements Serializable {
 
     }
 
-/*    public Product(Double price, String name, String typeName, String brandName, String description, Long sold, String stock, boolean active, String url) {
-        this.price = price;
-        this.name = name;
-        this.typeName = typeName;
-        this.brandName = brandName;
-        this.description = description;
-        this.sold = sold;
-        this.stock = stock;
-        this.active = active;
-        this.url = url;
-    }*/
+
 
     public Product(Double price, String name, Long typeId, Long brandId, String description, Long sold, Long stock, boolean active, String url) {
         this.price = price;

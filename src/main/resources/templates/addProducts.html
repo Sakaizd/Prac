@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="POST" action="" th:action="@{~/addProducts.action}">
+    <div>
+        <p>商品名<input type="text"   placeholder="商品名"  name="name"/></p>
+        <p>是否上架<input type="text"  placeholder="true/false"  name="active"/></p>
+        <p>品牌id<input type="text"   placeholder="商品品牌id"  name="brandId"/></p>
+        <p>型号id<input type="text"  placeholder="商品型号id"  name="typeId"/></p>
+        <p>价格<input type="text"   placeholder="价格"  name="price"/></p>
+        <p>库存<input type="text"  placeholder="库存"  name="stock"/></p>
+        <p>商品描述<input type="text"  placeholder="商品描述"  name="description"/></p>
+        <p>URL<input type="text"  placeholder="商品图片名"  name="url"/></p>
+    </div>
+    <input type="submit" value="添加"  />
+</form>
+</body>
+</html>

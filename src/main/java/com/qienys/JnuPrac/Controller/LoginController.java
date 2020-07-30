@@ -29,26 +29,23 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
+            User loginUser = userServiceImpl.findByUserName(user.getUserName());
             result.put("router", "default");
-            result.put("method", "json");
             result.put("msg","LoginSuccess");
-            result.put("username", user.getUserName());
-            result.put("userType", user.getUserType());
+            result.put("username", loginUser.getUserName());
+            result.put("userType", loginUser.getUserType());
+            System.out.println("user type"+loginUser.getUserType());
             System.out.println("loginsuccess");
         } catch (UnknownAccountException e) {
-            result.put("method", "json");
             result.put("router","LoginPage");
             result.put("msg","UnknownAccount");
         } catch (IncorrectCredentialsException e) {
-            result.put("method", "json");
             result.put("router","LoginPage");
             result.put("msg","IncorrectCredentials");
         } catch (LockedAccountException e) {
-            result.put("method", "json");
             result.put("router","LoginPage");
             result.put("msg","LockedAccount");
         } catch (AuthenticationException e) {
-            result.put("method", "json");
             result.put("router","LoginPage");
             result.put("msg","UnAuthentication");
         }
@@ -77,7 +74,7 @@ public class LoginController {
 
     @RequestMapping("/index")
     public String index() {
-        System.out.println("/index");
+        //System.out.println("/index");
         if(SecurityUtils.getSubject().isAuthenticated()){
             User user = (User) SecurityUtils.getSubject().getPrincipal();
             System.out.println(user.getUserName());
@@ -113,7 +110,7 @@ public class LoginController {
 
 
     @GetMapping(value = {"/LoginPage","/RegisterPage","/QueryDataPage/user","/ModifyPage",
-    "/ModifyPassWord","/MyCart","/"})
+    "/ModifyPassWord","/MyCart","/product","/MyOrders","/admin",""})
     public String redirect(){
         return "redirect:/index";
     }

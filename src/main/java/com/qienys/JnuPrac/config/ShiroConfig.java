@@ -37,7 +37,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/img/**", "anon");
         filterChainDefinitionMap.put("/index", "anon");
         filterChainDefinitionMap.put("/register", "anon");
-        filterChainDefinitionMap.put("/upload", "anon");
+        filterChainDefinitionMap.put("/static/upload", "anon");
+        filterChainDefinitionMap.put("/static/upload/**", "anon");
         filterChainDefinitionMap.put("/uploadStatus", "anon");
         filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/login", "anon");
@@ -48,7 +49,7 @@ public class ShiroConfig {
 
         //需要登陆
         filterChainDefinitionMap.put("/**", "anon");//test
-        //filterChainDefinitionMap.put("/**", "user");
+        //filterChainDefinitionMap.put("/**", "authc");
 
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

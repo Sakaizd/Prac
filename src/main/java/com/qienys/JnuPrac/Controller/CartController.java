@@ -35,6 +35,7 @@ public class CartController {
     @PostMapping(value = "/addToCart", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String addToCart(@RequestBody JSONObject jsonParam) {
+        //System.out.println(jsonParam.toJSONString());
         //request productId  count
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
@@ -57,7 +58,6 @@ public class CartController {
             cart.setDescription(product.getDescription());
             cart.setUrl(product.getUrl());
             cart.setPrice(product.getPrice());
-            cart.setActive(product.isActive());
             cartServiceImpl.save(cart);
         }
         JSONObject jsonObject=new JSONObject();
@@ -66,24 +66,19 @@ public class CartController {
     }
 
 
-    @RequestMapping(value = "/getCartList", method = RequestMethod.GET, produces = "application/json;charset = UTF-8")
+    @GetMapping(value = "/getCartList")
     @ResponseBody
     public String getCartList(){
-        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
-        //User loginUser = userServiceImpl.findByUserName("user");
-
+        User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
         List<Cart> cartList = cartServiceImpl.findAllByUid(loginUser.getId());
         JSON.toJSONString(cartList);
-        //jsonArray.add(cartList);
         return JSON.toJSONString(cartList);
     }
 
     @PostMapping(value = "/changeCart", produces = "application/json;charset = UTF-8")
     @ResponseBody
     public String changeCart(@RequestBody JSONObject jsonParam){
-        //System.out.println(jsonParam.toJSONString());
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();//test
-        //User loginUser = userServiceImpl.findByUserName("user");
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
         Cart tempCart = cartServiceImpl.findByUidAndAndProductId(loginUser.getId(),cart.getProductId());
         tempCart.setCount(tempCart.getCount()+cart.getCount());
@@ -97,20 +92,25 @@ public class CartController {
     @PostMapping(value = "/deleteFromCart", produces = "application/json;charset = UTF-8")
     @ResponseBody
     public String deleteFromCart(@RequestBody JSONObject jsonParam){
-        //take productId
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();
-        //User loginUser = userServiceImpl.findByUserName("user");//test
         Cart cart = JSON.parseObject(jsonParam.toJSONString(),Cart.class);
-        cartServiceImpl.deleteByUidAndProductId(loginUser.getId(),cart.getProductId());
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("msg","DeleteSuccess");
-        jsonObject.put("router","MyCart");
+        if(jsonParam.isEmpty()){
+            jsonObject.put("msg","eeeeerrrrrrrrrrooooooooor!");
+            jsonObject.put("router","MyCart");
+        }
+        else {
+            cartServiceImpl.deleteByUidAndProductId(loginUser.getId(),cart.getProductId());
+            jsonObject.put("msg","DeleteSuccess");
+            jsonObject.put("router","MyCart");
+        }
+
         return jsonObject.toJSONString();
     }
 
 
 
-    @GetMapping("getTotalPrice")
+    @GetMapping("/getTotalPrice")
     @ResponseBody
     public String getTotalPrice(){
         User loginUser = (User) SecurityUtils.getSubject().getPrincipal();

@@ -26,9 +26,42 @@ public class MallController {
         //JSONObject json = new JSONObject();
         List<Product> productList = productServiceImpl.findAll();
         //jsonArray.add(productList);
-        int i=1;
         for(Product product : productList) {
-            System.out.println(i++);
+            //System.out.println("brand id"+product.getBrandId());
+            //System.out.println("type id "+product.getTypeId());
+            if(product.isActive()){
+                JSONObject json = new JSONObject();
+                json.put("brandName",productPropertiesServiceImpl.
+                        findByBrandIdAndAndTypeId(product.getBrandId(),product.getTypeId()).getBrandName());
+                json.put("typeName",productPropertiesServiceImpl.
+                        findByBrandIdAndAndTypeId(product.getBrandId(),product.getTypeId()).getTypeName());
+                json.put("id",product.getId());
+                json.put("price",product.getPrice());
+                json.put("name",product.getName());
+                json.put("typeId",product.getTypeId());
+                json.put("brandId",product.getBrandId());
+                json.put("description",product.getDescription());
+                json.put("sold",product.getSold());
+                json.put("stock",product.getStock());
+                json.put("active",product.isActive());
+                json.put("url",product.getUrl());
+                jsonArray.add(json);
+            }
+
+        }
+        return jsonArray.toJSONString();
+    }
+
+    @GetMapping("/getAllProductsByAdmin")
+    @ResponseBody
+    public String getAllProductsByAdmin(){
+        JSONArray jsonArray = new JSONArray();
+        //JSONObject json = new JSONObject();
+        List<Product> productList = productServiceImpl.findAll();
+        //jsonArray.add(productList);
+        for(Product product : productList) {
+            //System.out.println("brand id"+product.getBrandId());
+            //System.out.println("type id "+product.getTypeId());
             JSONObject json = new JSONObject();
             json.put("brandName",productPropertiesServiceImpl.
                     findByBrandIdAndAndTypeId(product.getBrandId(),product.getTypeId()).getBrandName());
@@ -45,10 +78,9 @@ public class MallController {
             json.put("active",product.isActive());
             json.put("url",product.getUrl());
             jsonArray.add(json);
-        }
-        //System.out.println(jsonArray.toJSONString());
+            }
+
         return jsonArray.toJSONString();
     }
-
 
 }
